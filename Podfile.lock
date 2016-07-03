@@ -1,0 +1,10 @@
+PODS:
+  - Sage (1.0.0)
+
+DEPENDENCIES:
+  - Sage (~> 1.0.0)
+
+SPEC CHECKSUMS:
+  Sage: bb4ab34e00850a3f1a4b992342b436731a975491
+
+COCOAPODS: 0.39.0

@@ -1,0 +1,6 @@
+framework module Sage {
+  umbrella header "Sage-umbrella.h"
+
+  export *
+  module * { export * }
+}
