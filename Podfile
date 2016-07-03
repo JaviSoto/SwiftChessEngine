@@ -6,5 +6,5 @@
 target 'SwiftChessEngine' do
 	use_frameworks!
 
-	pod 'Sage', '~> 1.0.0'
+	pod 'Sage', :git => 'https://github.com/nvzqz/Sage.git', :branch => 'master'
 end

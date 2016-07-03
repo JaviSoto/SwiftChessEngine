@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'B8560C792CB38CCB58B03C45'
+               BlueprintIdentifier = '2CAC42B75027DF627C23941F'
                BlueprintName = 'Sage'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'Sage.framework'>

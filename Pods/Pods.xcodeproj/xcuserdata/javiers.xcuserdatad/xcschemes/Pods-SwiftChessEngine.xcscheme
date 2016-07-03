@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'A6B98D2F1D4D6B4E9D666948'
+               BlueprintIdentifier = '8710823F0DB211B9292A4711'
                BlueprintName = 'Pods-SwiftChessEngine'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'Pods_SwiftChessEngine.framework'>

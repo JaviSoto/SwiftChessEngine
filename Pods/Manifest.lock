@@ -2,7 +2,17 @@ PODS:
   - Sage (1.0.0)
 
 DEPENDENCIES:
-  - Sage (~> 1.0.0)
+  - Sage (from `https://github.com/nvzqz/Sage.git`, branch `master`)
+
+EXTERNAL SOURCES:
+  Sage:
+    :branch: master
+    :git: https://github.com/nvzqz/Sage.git
+
+CHECKOUT OPTIONS:
+  Sage:
+    :commit: 0d7fb31f82cc47b9ad02b0f101f8d89afb9e5ff9
+    :git: https://github.com/nvzqz/Sage.git
 
 SPEC CHECKSUMS:
   Sage: bb4ab34e00850a3f1a4b992342b436731a975491
