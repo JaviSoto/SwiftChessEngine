@@ -16,12 +16,16 @@
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7F5-Sz-nL6">
+                            <view contentMode="scaleToFill" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="7F5-Sz-nL6">
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0X9-mh-Y1h"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0X9-mh-Y1h">
+                                        <constraints>
+                                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="600" id="VmS-Ki-a2g"/>
+                                        </constraints>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -38,7 +42,7 @@
                                     <action selector="calculateButtonTapped" destination="BYZ-38-t0r" eventType="touchUpInside" id="zKS-aM-pp6"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ihL-15-6EG">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="Test" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ihL-15-6EG">
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -47,14 +51,15 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="ihL-15-6EG" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="5" id="G9S-lR-5ik"/>
+                            <constraint firstItem="7F5-Sz-nL6" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" priority="999" constant="30" id="JRG-z3-jok"/>
                             <constraint firstItem="7F5-Sz-nL6" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="SwE-dD-w14"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="a6d-Kv-UYK" secondAttribute="bottom" constant="15" id="dMC-3e-Uyn"/>
                             <constraint firstItem="ihL-15-6EG" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="mWZ-G8-kXI"/>
                             <constraint firstItem="ihL-15-6EG" firstAttribute="top" relation="greaterThanOrEqual" secondItem="7F5-Sz-nL6" secondAttribute="bottom" constant="10" id="pRx-uw-RER"/>
                             <constraint firstItem="a6d-Kv-UYK" firstAttribute="top" secondItem="ihL-15-6EG" secondAttribute="bottom" constant="5" id="uDc-hv-eXs"/>
                             <constraint firstItem="a6d-Kv-UYK" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="uHO-Sp-OsC"/>
-                            <constraint firstItem="7F5-Sz-nL6" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="30" id="yDz-Cz-MtT"/>
-                            <constraint firstItem="7F5-Sz-nL6" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="30" id="zCp-Ak-DtA"/>
+                            <constraint firstItem="7F5-Sz-nL6" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="yDz-Cz-MtT"/>
+                            <constraint firstItem="7F5-Sz-nL6" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="30" id="zCp-Ak-DtA"/>
                         </constraints>
                     </view>
                     <connections>
