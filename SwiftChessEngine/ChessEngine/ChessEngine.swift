@@ -92,10 +92,6 @@ extension Game {
             return ChessEngine.PositionAnalysis(move: nil, valuation: valuation, movesAnalized: 1)
         }
 
-        guard availableMoves.count > 1 else {
-            return staticPositionAnalysis()
-        }
-
         var bestMove: Move?
         var bestValuation: ChessEngine.Valuation = movingSide.isWhite ? Double.infinity.negated() : Double.infinity
         var movesAnalized = 0
@@ -112,23 +108,22 @@ extension Game {
             movesAnalized += analysis.movesAnalized
 
             if movingSide.isWhite {
-                if analysis.valuation > bestValuation {
+                if analysis.valuation > alpha {
+                    alpha = analysis.valuation
                     bestValuation = analysis.valuation
                     bestMove = move
                 }
-
-                alpha = ChessEngine.Valuation.maximum(alpha, bestValuation)
-                if beta <= alpha {
+                if alpha >= beta {
                     break
                 }
             }
             else {
-                if analysis.valuation < bestValuation {
+                if analysis.valuation < beta {
+                    beta = analysis.valuation
                     bestValuation = analysis.valuation
                     bestMove = move
                 }
 
-                beta = ChessEngine.Valuation.minimum(beta, bestValuation)
                 if beta <= alpha {
                     break
                 }
