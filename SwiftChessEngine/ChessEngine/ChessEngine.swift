@@ -77,6 +77,21 @@ extension Game {
         }
 
         let availableMoves = self.availableMoves()
+
+        guard !availableMoves.isEmpty else {
+            let valuation: ChessEngine.Valuation
+
+            switch self.outcome {
+                case .some(.win(let color)):
+                    valuation = color.isWhite ? ChessEngine.Valuation.infinity : ChessEngine.Valuation.infinity.negated()
+
+                default:
+                    valuation = 0.0
+            }
+
+            return ChessEngine.PositionAnalysis(move: nil, valuation: valuation, movesAnalized: 1)
+        }
+
         guard availableMoves.count > 1 else {
             return staticPositionAnalysis()
         }
