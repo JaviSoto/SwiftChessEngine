@@ -29,11 +29,7 @@ extension Collection where Iterator.Element == Piece {
 
 extension Board {
     func evaluation(movingSide: Game.PlayerTurn) -> ChessEngine.Valuation {
-        let raw = self.whitePieces.valuation - self.blackPieces.valuation
-
-        return raw
-
-        return movingSide.isWhite ? raw : -raw
+        return self.whitePieces.valuation - self.blackPieces.valuation
     }
 }
 
@@ -102,8 +98,6 @@ final class ChessEngine {
     }
 
     func benchmark() -> (Int, TimeInterval) {
-//        NSLog("Starting")
-
         var iterations = 0
 
         let start = Date()
@@ -111,14 +105,7 @@ final class ChessEngine {
             iterations += 1
 
             guard let move = game.availableMoves().random else { break }
-
-            do {
-                try game.execute(move: move)
-            }
-            catch {
-//                NSLog("Error applying move \(move): \(error)")
-                break
-            }
+            try! game.execute(move: move)
         }
 
         let end = Date()
