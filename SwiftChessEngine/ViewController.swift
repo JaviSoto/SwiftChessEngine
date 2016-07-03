@@ -30,24 +30,16 @@ extension UIView {
 
 final class EngineViewController: UIViewController {
     @IBOutlet private var boardViewContainer: UIView!
+    @IBOutlet private var boardImageView: UIImageView!
     @IBOutlet private var evaluationLabel: UILabel!
     @IBOutlet private var toggleCalculationButton: UIButton!
 
-    private var currentBoard: Board? {
-        willSet {
-            self.boardViewContainer.subviews.forEach { $0.removeFromSuperview() }
-        }
+    private var currentBoard: Board! {
         didSet {
-            if let board = currentBoard {
-                let view = board.customPlaygroundQuickLook.view!
-                let image = view.image
+            let view = currentBoard.customPlaygroundQuickLook.view!
+            let image = view.image
 
-                let imageView = UIImageView(frame: self.boardViewContainer.bounds)
-                imageView.contentMode = .scaleAspectFit
-                imageView.image = image
-
-                self.boardViewContainer.addSubview(imageView)
-            }
+            self.boardImageView.image = image
         }
     }
 
@@ -58,6 +50,8 @@ final class EngineViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        self.currentBoard = self.engine.game.position.board
     }
 
     private func presentAlertWithGamePGN() {
@@ -111,7 +105,6 @@ final class EngineViewController: UIViewController {
                 }
             }
         }
-
     }
 
     @IBAction func calculateButtonTapped() {
