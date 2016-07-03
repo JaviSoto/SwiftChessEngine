@@ -54,7 +54,7 @@ final class EngineViewController: UIViewController {
     private let engine = ChessEngine()
 
     private let engineQueue = DispatchQueue(label: "engine")
-    private static let maxDepth = 4
+    private static let maxDepth = 3
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,6 +70,8 @@ final class EngineViewController: UIViewController {
         }
     }
 
+    var totalMovesAnalized = 0
+
     private func tick() {
         guard self.calculating else { return }
 
@@ -83,7 +85,8 @@ final class EngineViewController: UIViewController {
                         self.currentBoard = self.engine.game.position.board
                     }
 
-                    self.evaluationLabel.text = "Valuation: \(analysis.valuation) (after \(analysis.movesAnalized) moves analized)"
+                    self.totalMovesAnalized += analysis.movesAnalized
+                    self.evaluationLabel.text = "Valuation: \(analysis.valuation) (after \(self.totalMovesAnalized) moves analized)"
                     self.tick()
                 }
             }
