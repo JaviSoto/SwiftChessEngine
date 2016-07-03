@@ -16,20 +16,16 @@ extension Collection where Iterator.Element == Piece {
 }
 
 extension Board {
-    static let initialChessBoard = Board()
-
-    func allAttackers(attackingColor: Color) -> Bitboard {
-        var bitboard = Bitboard()
-
+    func allAttackers(attackingColor: Color) -> Int {
         let oppositePiecesSquares = self.squares(for: attackingColor.inverse())
 
-        for oppositePieceSquare in oppositePiecesSquares {
-            let attackers = self.attackers(to: oppositePieceSquare, color: attackingColor)
+        var total = 0
 
-            bitboard &= attackers
+        for oppositePieceSquare in oppositePiecesSquares {
+            total += self.attackers(to: oppositePieceSquare, color: attackingColor).count
         }
 
-        return bitboard
+        return total
     }
 }
 
@@ -65,8 +61,8 @@ extension Game {
 
         extras += Double(myPieces - theirPieces) * 0.1
 
-        extras += 0.01 * Double(board.allAttackers(attackingColor: movingSide).count)
-        extras -= 0.005 * Double(board.allAttackers(attackingColor: movingSide.inverse()).count)
+        extras += 0.001 * Double(board.allAttackers(attackingColor: movingSide))
+        extras -= 0.0005 * Double(board.allAttackers(attackingColor: movingSide.inverse()))
 
         let weHaveCastled = self.playedMoves(bySide: movingSide).contains { $0.isCastle }
         let theyHaveCastled = self.playedMoves(bySide: movingSide.inverse()).contains { $0.isCastle }
