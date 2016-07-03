@@ -35,6 +35,10 @@ extension Board {
 
 extension Game {
     func deepEvaluation(depth: Int) throws -> ChessEngine.PositionAnalysis {
+        return try self.deepEvaluation(depth: depth, alpha: Int.min, beta: Int.max)
+    }
+
+    private func deepEvaluation(depth: Int, alpha: Int, beta: Int) throws -> ChessEngine.PositionAnalysis {
         let movingSide = self.position.playerTurn
 
         func staticPositionAnalysis() -> ChessEngine.PositionAnalysis {
@@ -42,7 +46,7 @@ extension Game {
                 return self.board.evaluation(movingSide: movingSide)
             }
 
-            return ChessEngine.PositionAnalysis(move: nil, valuation: rawEvaluation(), movesAnalized: 0)
+            return ChessEngine.PositionAnalysis(move: nil, valuation: rawEvaluation(), movesAnalized: 1)
         }
 
         guard depth > 0 else {
@@ -58,19 +62,38 @@ extension Game {
         var bestValuation = movingSide.isWhite ? Int.min : Int.max
         var movesAnalized = 0
 
+        var alpha = alpha
+        var beta = beta
+
         for move in availableMoves {
-            movesAnalized += 1
-
             try self.execute(move: move)
-            let analysis = try self.deepEvaluation(depth: depth - 1)
-            let valuation = analysis.valuation
-            movesAnalized += analysis.movesAnalized
 
+            let analysis = try self.deepEvaluation(depth: depth - 1, alpha: alpha, beta: beta)
             self.undoMove()
 
-            if movingSide.isWhite && valuation > bestValuation || movingSide.isBlack && valuation < bestValuation {
-                bestMove = move
-                bestValuation = valuation
+            movesAnalized += analysis.movesAnalized
+
+            if movingSide.isWhite {
+                if analysis.valuation > bestValuation {
+                    bestValuation = analysis.valuation
+                    bestMove = move
+                }
+
+                alpha = max(alpha, bestValuation)
+                if beta <= alpha {
+                    break
+                }
+            }
+            else {
+                if analysis.valuation < bestValuation {
+                    bestValuation = analysis.valuation
+                    bestMove = move
+                }
+
+                beta = min(beta, bestValuation)
+                if beta <= alpha {
+                    break
+                }
             }
         }
 
