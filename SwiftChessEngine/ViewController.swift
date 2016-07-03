@@ -55,7 +55,7 @@ final class EngineViewController: UIViewController {
     }
 
     private func presentAlertWithGamePGN() {
-        let alert = UIAlertController(title: "Moves", message: "\(self.engine.game)", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Moves", message: "\(self.engine.game.playedMoves)", preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "OK", style: .`default`) { _ in
             alert.dismiss(animated: true)
         }
