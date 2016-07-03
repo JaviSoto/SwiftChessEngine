@@ -33,30 +33,89 @@ extension Board {
     }
 }
 
-extension Board {
-    func evaluation(movingSide: Game.PlayerTurn) -> ChessEngine.Valuation {
-        var extras: ChessEngine.Valuation = 0
+private extension CastlingRights {
+    private static let whiteCastlingRights: CastlingRights = [.whiteQueenside, .whiteKingside]
+    private static let blackCastlingRights: CastlingRights = [.blackQueenside, .blackKingside]
 
-        if self.kingIsChecked(for: movingSide.inverse()) {
-            extras += 1
-        }
-        else if self.kingIsChecked(for: movingSide) {
-            extras -= 0.3
-        }
+    static func rightsFor(color: Color) -> CastlingRights {
+        return color.isWhite ? self.whiteCastlingRights : self.blackCastlingRights
+    }
 
-        let myPieces = self.pieceCount(for: movingSide)
-        let theirPieces = self.pieceCount(for: movingSide.inverse())
-
-        extras += Double(myPieces - theirPieces) * 0.1
-
-        extras += 0.01 * Double(self.allAttackers(attackingColor: movingSide).count)
-        extras -= 0.005 * Double(self.allAttackers(attackingColor: movingSide.inverse()).count)
-
-        return (self.whitePieces.valuation - self.blackPieces.valuation) + (extras * (movingSide.isWhite ? 1 : -1))
+    func canCastle(side: Color) -> Bool {
+        return !self.intersection(CastlingRights.rightsFor(color: side)).isEmpty
     }
 }
 
 extension Game {
+    func currentPositionValuation() -> ChessEngine.Valuation {
+        let movingSide = self.position.playerTurn
+        let board = self.position.board
+
+        var extras: ChessEngine.Valuation = 0
+
+        if board.kingIsChecked(for: movingSide.inverse()) {
+            extras += 1
+        }
+        else if board.kingIsChecked(for: movingSide) {
+            extras -= 0.3
+        }
+
+        let myPieces = board.pieceCount(for: movingSide)
+        let theirPieces = board.pieceCount(for: movingSide.inverse())
+
+        extras += Double(myPieces - theirPieces) * 0.1
+
+        extras += 0.01 * Double(board.allAttackers(attackingColor: movingSide).count)
+        extras -= 0.005 * Double(board.allAttackers(attackingColor: movingSide.inverse()).count)
+
+        let weHaveCastled = self.playedMoves(bySide: movingSide).contains { $0.isCastle }
+        let theyHaveCastled = self.playedMoves(bySide: movingSide.inverse()).contains { $0.isCastle }
+
+        let pointsForCastling: ChessEngine.Valuation = 2
+        let cantCastlePenalty: ChessEngine.Valuation = -pointsForCastling
+
+        if weHaveCastled {
+            extras += pointsForCastling
+        }
+
+        if theyHaveCastled {
+            extras -= pointsForCastling
+        }
+
+        let weCanCastle = self.castlingRights.canCastle(side: movingSide)
+        let theyCanCastle = self.castlingRights.canCastle(side: movingSide.inverse())
+
+        if !weCanCastle {
+            extras -= cantCastlePenalty
+        }
+
+        if !theyCanCastle {
+            extras += cantCastlePenalty
+        }
+
+        return (board.whitePieces.valuation - board.blackPieces.valuation) + (extras * (movingSide.isWhite ? 1 : -1))
+    }
+}
+
+private extension Int {
+    var isEven: Bool {
+        return self % 2 == 0
+    }
+
+    var isOdd: Bool {
+        return !self.isEven
+    }
+}
+
+private extension Game {
+    func playedMoves(bySide side: Color) -> [Move] {
+        return self.playedMoves.enumerated()
+            .filter { (side.isWhite && $0.offset.isEven) || (side.isBlack && !$0.offset.isEven) }
+            .map { $0.element }
+    }
+}
+
+private extension Game {
     func deepEvaluation(depth: Int) throws -> ChessEngine.PositionAnalysis {
         return try self.deepEvaluation(depth: depth, alpha: ChessEngine.Valuation.infinity.negated(), beta: ChessEngine.Valuation.infinity)
     }
@@ -64,16 +123,8 @@ extension Game {
     private func deepEvaluation(depth: Int, alpha: ChessEngine.Valuation, beta: ChessEngine.Valuation) throws -> ChessEngine.PositionAnalysis {
         let movingSide = self.position.playerTurn
 
-        func staticPositionAnalysis() -> ChessEngine.PositionAnalysis {
-            func rawEvaluation() -> ChessEngine.Valuation {
-                return self.board.evaluation(movingSide: movingSide)
-            }
-
-            return ChessEngine.PositionAnalysis(move: nil, valuation: rawEvaluation(), movesAnalized: 1)
-        }
-
         guard depth > 0 else {
-            return staticPositionAnalysis()
+            return ChessEngine.PositionAnalysis(move: nil, valuation: self.currentPositionValuation(), movesAnalized: 1)
         }
 
         let availableMoves = self.availableMoves()
