@@ -51,6 +51,7 @@ final class EngineViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.evaluationLabel.text = nil
         self.currentBoard = self.engine.game.position.board
     }
 
