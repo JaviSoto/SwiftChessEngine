@@ -60,12 +60,27 @@ final class EngineViewController: UIViewController {
         super.viewDidLoad()
     }
 
+    private func presentAlertWithGamePGN() {
+        let alert = UIAlertController(title: "Moves", message: "\(self.engine.game)", preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: "OK", style: .`default`) { _ in
+            alert.dismiss(animated: true)
+        }
+        alert.addAction(dismissAction)
+
+        self.present(alert, animated: true)
+    }
+
     var calculating: Bool = false {
         didSet {
             self.toggleCalculationButton.setTitle(calculating ? "Stop calculating" : "Start calculating", for: [])
 
-            if calculating != oldValue && calculating {
-                self.tick()
+            if calculating != oldValue {
+                if calculating {
+                    self.tick()
+                }
+                else {
+                    self.presentAlertWithGamePGN()
+                }
             }
         }
     }
