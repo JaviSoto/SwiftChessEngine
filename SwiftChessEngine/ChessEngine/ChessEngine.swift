@@ -82,11 +82,11 @@ extension Game {
         let theyCanCastle = self.castlingRights.canCastle(side: movingSide.inverse())
 
         if !weCanCastle {
-            extras -= cantCastlePenalty
+            extras += cantCastlePenalty
         }
 
         if !theyCanCastle {
-            extras += cantCastlePenalty
+            extras -= cantCastlePenalty
         }
 
         return (board.whitePieces.valuation - board.blackPieces.valuation) + (extras * (movingSide.isWhite ? 1 : -1))
