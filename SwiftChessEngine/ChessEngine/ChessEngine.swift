@@ -9,36 +9,36 @@
 import Foundation
 import Sage
 
-extension Piece {
-    var value: ChessEngine.Valuation {
-        switch self {
-            case .pawn: return 1
-            case .bishop, .knight: return 3
-            case .queen: return 10
-            case .rook: return 5
-            case .king: return 100
-        }
-    }
-}
-
 extension Collection where Iterator.Element == Piece {
     var valuation: ChessEngine.Valuation {
-        return self.map { $0.value }.reduce(0, combine: +)
+        return self.lazy.filter { !$0.isKing }.map { $0.relativeValue }.reduce(0, combine: +)
     }
 }
 
 extension Board {
     func evaluation(movingSide: Game.PlayerTurn) -> ChessEngine.Valuation {
-        return self.whitePieces.valuation - self.blackPieces.valuation
+        var extras: ChessEngine.Valuation = 0
+
+        if self.kingIsChecked(for: movingSide.inverse()) {
+            extras += 0.2
+        }
+
+        if self.pieceCount(for: movingSide) > self.pieceCount(for: movingSide.inverse()) {
+            extras += 0.4
+        }
+
+        extras += Double(self.attackersToKing(for: movingSide.inverse()).count) * 0.05
+
+        return (self.whitePieces.valuation - self.blackPieces.valuation) + (extras * (movingSide.isWhite ? 1 : -1))
     }
 }
 
 extension Game {
     func deepEvaluation(depth: Int) throws -> ChessEngine.PositionAnalysis {
-        return try self.deepEvaluation(depth: depth, alpha: Int.min, beta: Int.max)
+        return try self.deepEvaluation(depth: depth, alpha: ChessEngine.Valuation.infinity.negated(), beta: ChessEngine.Valuation.infinity)
     }
 
-    private func deepEvaluation(depth: Int, alpha: Int, beta: Int) throws -> ChessEngine.PositionAnalysis {
+    private func deepEvaluation(depth: Int, alpha: ChessEngine.Valuation, beta: ChessEngine.Valuation) throws -> ChessEngine.PositionAnalysis {
         let movingSide = self.position.playerTurn
 
         func staticPositionAnalysis() -> ChessEngine.PositionAnalysis {
@@ -59,7 +59,7 @@ extension Game {
         }
 
         var bestMove: Move?
-        var bestValuation = movingSide.isWhite ? Int.min : Int.max
+        var bestValuation: ChessEngine.Valuation = movingSide.isWhite ? Double.infinity.negated() : Double.infinity
         var movesAnalized = 0
 
         var alpha = alpha
@@ -79,7 +79,7 @@ extension Game {
                     bestMove = move
                 }
 
-                alpha = max(alpha, bestValuation)
+                alpha = ChessEngine.Valuation.maximum(alpha, bestValuation)
                 if beta <= alpha {
                     break
                 }
@@ -90,7 +90,7 @@ extension Game {
                     bestMove = move
                 }
 
-                beta = min(beta, bestValuation)
+                beta = ChessEngine.Valuation.minimum(beta, bestValuation)
                 if beta <= alpha {
                     break
                 }
@@ -102,7 +102,7 @@ extension Game {
 }
 
 final class ChessEngine {
-    typealias Valuation = Int
+    typealias Valuation = Double
 
     struct PositionAnalysis {
         let move: Move?
