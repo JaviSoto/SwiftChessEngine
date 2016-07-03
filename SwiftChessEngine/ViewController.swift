@@ -28,11 +28,12 @@ extension UIView {
     }
 }
 
-class ViewController: UIViewController {
-    @IBOutlet var boardViewContainer: UIView!
-    @IBOutlet var evaluationLabel: UILabel!
+final class EngineViewController: UIViewController {
+    @IBOutlet private var boardViewContainer: UIView!
+    @IBOutlet private var evaluationLabel: UILabel!
+    @IBOutlet private var toggleCalculationButton: UIButton!
 
-    var currentBoard: Board? {
+    private var currentBoard: Board? {
         willSet {
             self.boardViewContainer.subviews.forEach { $0.removeFromSuperview() }
         }
@@ -50,18 +51,31 @@ class ViewController: UIViewController {
         }
     }
 
-    let engine = ChessEngine()
+    private let engine = ChessEngine()
+
+    private let engineQueue = DispatchQueue(label: "engine")
+    private static let maxDepth = 4
 
     override func viewDidLoad() {
         super.viewDidLoad()
     }
 
-    @IBAction func calculateButtonTapped() {
-        self.evaluationLabel.text = "Calculating..."
+    var calculating: Bool = false {
+        didSet {
+            self.toggleCalculationButton.setTitle(calculating ? "Stop calculating" : "Start calculating", for: [])
 
-        DispatchQueue(label: "engine").async {
+            if calculating != oldValue && calculating {
+                self.tick()
+            }
+        }
+    }
+
+    private func tick() {
+        guard self.calculating else { return }
+
+        self.engineQueue.async {
             do {
-                let analysis = try self.engine.bestMove(maxDepth: 2)
+                let analysis = try self.engine.bestMove(maxDepth: EngineViewController.maxDepth)
 
                 DispatchQueue.main.async {
                     if let move = analysis.move {
@@ -70,6 +84,7 @@ class ViewController: UIViewController {
                     }
 
                     self.evaluationLabel.text = "Valuation: \(analysis.valuation) (after \(analysis.movesAnalized) moves analized)"
+                    self.tick()
                 }
             }
             catch {
@@ -78,6 +93,11 @@ class ViewController: UIViewController {
                 }
             }
         }
+
+    }
+
+    @IBAction func calculateButtonTapped() {
+        self.calculating = !self.calculating
     }
 }
 
