@@ -96,7 +96,7 @@ final class EngineViewController: UIViewController {
                     }
 
                     self.totalMovesAnalized += analysis.movesAnalized
-                    self.evaluationLabel.text = "Valuation: \(analysis.valuation) (after \(self.totalMovesAnalized) moves analized)"
+                    self.evaluationLabel.text = "Move \(self.engine.game.fullmoves). Valuation: \(analysis.valuation) (after \(self.totalMovesAnalized) moves analized)"
                     self.tick()
                 }
             }
