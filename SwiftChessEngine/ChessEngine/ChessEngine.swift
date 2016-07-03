@@ -16,6 +16,22 @@ extension Collection where Iterator.Element == Piece {
 }
 
 extension Board {
+    func allAttackers(attackingColor: Color) -> Bitboard {
+        var bitboard = Bitboard()
+
+        let oppositePiecesSquares = self.squares(for: attackingColor.inverse())
+
+        for oppositePieceSquare in oppositePiecesSquares {
+            let attackers = self.attackers(to: oppositePieceSquare, color: attackingColor)
+
+            bitboard &= attackers
+        }
+
+        return bitboard
+    }
+}
+
+extension Board {
     func evaluation(movingSide: Game.PlayerTurn) -> ChessEngine.Valuation {
         var extras: ChessEngine.Valuation = 0
 
@@ -27,7 +43,9 @@ extension Board {
             extras += 0.4
         }
 
-        extras += Double(self.attackersToKing(for: movingSide.inverse()).count) * 0.05
+        extras += 0.05 * Double(self.attackersToKing(for: movingSide.inverse()).count)
+
+        extras += 0.01 * Double(self.allAttackers(attackingColor: movingSide).count)
 
         return (self.whitePieces.valuation - self.blackPieces.valuation) + (extras * (movingSide.isWhite ? 1 : -1))
     }
