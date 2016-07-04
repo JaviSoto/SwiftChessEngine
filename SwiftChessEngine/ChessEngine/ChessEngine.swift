@@ -100,8 +100,8 @@ extension Game {
         extras -= 0.01 * Double(board.doubledPawns(for: movingSide))
         extras += 0.01 * Double(board.doubledPawns(for: oppositeSide))
 
-        let weHaveCastled = self.playedMoves(bySide: movingSide).contains { $0.isCastle }
-        let theyHaveCastled = self.playedMoves(bySide: oppositeSide).contains { $0.isCastle }
+        let weHaveCastled = self.playedMoves(bySide: movingSide).contains { $0.isCastle() }
+        let theyHaveCastled = self.playedMoves(bySide: oppositeSide).contains { $0.isCastle() }
 
         let pointsForCastling: ChessEngine.Valuation = 2
         let cantCastlePenalty: ChessEngine.Valuation = -pointsForCastling

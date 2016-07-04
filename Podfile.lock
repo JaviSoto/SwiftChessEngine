@@ -11,7 +11,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   Sage:
-    :commit: 9243cb7db370b57021337a389a48de610c3d55ef
+    :commit: 1661637a9211871fb42e391c46f391aa6f2bb4f5
     :git: https://github.com/nvzqz/Sage.git
 
 SPEC CHECKSUMS:
