@@ -11,7 +11,7 @@ import Sage
 
 extension Collection where Iterator.Element == Piece {
     var valuation: ChessEngine.Valuation {
-        return self.lazy.filter { !$0.isKing }.map { $0.relativeValue }.reduce(0, combine: +)
+        return self.lazy.filter { !$0.kind.isKing }.map { $0.kind.relativeValue }.reduce(0, combine: +)
     }
 }
 
@@ -50,7 +50,7 @@ private extension Board {
 
     func doubledPawns(for color: Color) -> Int {
         let pawnFiles = self.pieces(for: color)
-            .filter { $0.isPawn }
+            .filter { $0.kind.isPawn }
             .flatMap { self.locations(for: $0).map { $0.file.rawValue } }
 
         let uniqueFiles = Set(pawnFiles)

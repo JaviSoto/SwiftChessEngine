@@ -266,8 +266,8 @@ public struct Board: Hashable, CustomStringConvertible {
 
     }
 
-    /// The piece to bitboard mapping of `self`.
-    internal var _bitboards: [Piece: Bitboard]
+    /// The bitboards of `self`.
+    internal var _bitboards: ContiguousArray<Bitboard>
 
     /// The board's pieces.
     public var pieces: [Piece] {
@@ -286,7 +286,7 @@ public struct Board: Hashable, CustomStringConvertible {
 
     /// A bitboard for the empty spaces of `self`.
     public var emptySpaces: Bitboard {
-        return ~_bitboards.reduce(0, combine: { $0 | $1.1 })
+        return ~_bitboards.reduce(0, combine: |)
     }
 
     /// A textual representation of `self`.
@@ -341,19 +341,19 @@ public struct Board: Hashable, CustomStringConvertible {
     ///
     /// - parameter variant: The variant to populate the board for. Won't populate if `nil`. Default is `Standard`.
     public init(variant: Variant? = ._standard) {
-        _bitboards = [:]
+        #if swift(>=3)
+            _bitboards = ContiguousArray(repeatElement(0, count: 12))
+        #else
+            _bitboards = ContiguousArray(count: 12, repeatedValue: 0)
+        #endif
         if let variant = variant {
             for piece in Piece.all {
-                _bitboards[piece] = Bitboard(startFor: piece)
+                _bitboards[piece.hashValue] = Bitboard(startFor: piece)
             }
             if variant.isUpsideDown {
-                for (piece, board) in _bitboards {
-                    _bitboards[piece] = board.flippedVertically()
+                for index in _bitboards.indices {
+                    _bitboards[index].flipVertically()
                 }
-            }
-        } else {
-            for piece in Piece.all {
-                _bitboards[piece] = 0
             }
         }
     }
@@ -424,21 +424,18 @@ public struct Board: Hashable, CustomStringConvertible {
     /// Gets and sets a piece at `square`.
     public subscript(square: Square) -> Piece? {
         get {
-            for (piece, board) in _bitboards {
-                if board[square] {
-                    return piece
+            for index in _bitboards.indices {
+                if _bitboards[index][square] {
+                    return Piece(value: index)
                 }
             }
             return nil
         }
         set {
-            for piece in _bitboards.keys {
-                self[piece][square] = false
+            for index in _bitboards.indices {
+                _bitboards[index][square] = false
             }
             if let piece = newValue {
-                if _bitboards[piece] == nil {
-                    _bitboards[piece] = Bitboard()
-                }
                 self[piece][square] = true
             }
         }
@@ -447,18 +444,18 @@ public struct Board: Hashable, CustomStringConvertible {
     /// Gets and sets the bitboard for `piece`.
     internal subscript(piece: Piece) -> Bitboard {
         get {
-            return _bitboards[piece] ?? Bitboard()
+            return _bitboards[piece.hashValue] ?? Bitboard()
         }
         set {
-            _bitboards[piece] = newValue
+            _bitboards[piece.hashValue] = newValue
         }
     }
 
     /// Returns `self` flipped horizontally.
     private func _flippedHorizontally() -> Board {
         var board = self
-        for (p, b) in _bitboards {
-            board._bitboards[p] = b.flippedHorizontally()
+        for index in _bitboards.indices {
+            board._bitboards[index].flipHorizontally()
         }
         return board
     }
@@ -466,8 +463,8 @@ public struct Board: Hashable, CustomStringConvertible {
     /// Returns `self` flipped vertically.
     private func _flippedVertically() -> Board {
         var board = self
-        for (p, b) in _bitboards {
-            board._bitboards[p] = b.flippedVertically()
+        for index in _bitboards.indices {
+            board._bitboards[index].flipVertically()
         }
         return board
     }
@@ -533,7 +530,7 @@ public struct Board: Hashable, CustomStringConvertible {
         if let color = color {
             return bitboard(for: color).count
         } else {
-            return _bitboards.map({ $1.count }).reduce(0, combine: +)
+            return _bitboards.map({ $0.count }).reduce(0, combine: +)
         }
     }
 
@@ -552,15 +549,13 @@ public struct Board: Hashable, CustomStringConvertible {
     /// Returns the bitboard for `color`.
     @warn_unused_result
     public func bitboard(for color: Color) -> Bitboard {
-        return _bitboards.flatMap({ piece, board in
-            piece.color == color ? board : nil
-        }).reduce(0, combine: |)
+        return Piece.pieces(for: color).map({ self[$0] }).reduce(0, combine: |)
     }
 
     /// Returns the bitboard for all pieces.
     @warn_unused_result
     public func bitboard() -> Bitboard {
-        return _bitboards.reduce(0, combine: { $0 | $1.1 })
+        return _bitboards.reduce(0, combine: |)
     }
 
     /// Returns the attackers to `square` corresponding to `color`.
@@ -575,12 +570,7 @@ public struct Board: Hashable, CustomStringConvertible {
         let attacks = playerPieces.map({ piece in
             square.attacks(for: piece, stoppers: all)
         })
-        #if swift(>=3)
-            let queen = Piece.queen(color)
-        #else
-            let queen = Piece.Queen(color)
-        #endif
-        let queens = (attacks[2] | attacks[3]) & self[queen]
+        let queens = (attacks[2] | attacks[3]) & self[Piece(queen: color)]
         return zip(attackPieces, attacks)
             .map({ self[$0] & $1 })
             .reduce(queens, combine: |)
@@ -709,17 +699,12 @@ public struct Board: Hashable, CustomStringConvertible {
     /// Returns the square of the king for `color`, if any.
     @warn_unused_result
     public func squareForKing(for color: Color) -> Square? {
-        #if swift(>=3)
-            let king = Piece.king(color)
-        #else
-            let king = Piece.King(color)
-        #endif
-        return bitboard(for: king).lsbSquare
+        return bitboard(for: Piece(king: color)).lsbSquare
     }
 
     /// Returns `true` if `self` contains `piece`.
     public func contains(_ piece: Piece) -> Bool {
-        return _bitboards[piece]?.isEmpty == false
+        return !self[piece].isEmpty
     }
 
     /// Returns the FEN string for the board.

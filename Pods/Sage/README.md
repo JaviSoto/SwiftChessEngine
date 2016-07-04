@@ -27,7 +27,8 @@ Sage is a cross-platform chess library for Swift.
     - [Forsyth–Edwards Notation](#forsythedwards-notation)
     - [Iterating Through a Board](#iterating-through-a-board)
     - [Squares to Moves](#squares-to-moves)
-    - [Playground Quick Look](#playground-quick-look)
+    - [Playground Usage](#playground-usage)
+        - [Board Quick Look](#board-quick-look)
 - [License](#license)
 
 ## Features
@@ -88,6 +89,12 @@ to learn more.
     use_frameworks!
 
     pod 'Sage', '~> 1.0.0'
+    ```
+
+    If you want to be on the bleeding edge, replace the last line with:
+
+    ```ruby
+    pod 'Sage', :git => 'https://github.com/nvzqz/Sage.git'
     ```
 
 2. Run `pod install` and open the `.xcworkspace` file to launch Xcode.
@@ -274,7 +281,12 @@ print(Square.a4.moves(to: [.c3, .d4, .f6]))
 // [a4 >>> c3, a4 >>> d4, a4 >>> f6]
 ```
 
-### Playground Quick Look
+### Playground Usage
+
+To use `Sage.playground`, first open `Sage.xcodeproj` and build the OS X target.
+You can then use the playground from within the project.
+
+#### Board Quick Look
 
 `Board` conforms to the `CustomPlaygroundQuickLookable` protocol.
 
