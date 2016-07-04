@@ -81,14 +81,14 @@ final class EngineViewController: UIViewController {
     }
 
     private func presentAlertViewsToEnterMove() {
-        self.presentAlertViewToEnterText(title: "From square") { text in
+        self.presentAlertViewToEnterText(title: "Enter Move") { text in
             guard text.characters.count == 4 else {
                 self.presentAlertViewsToEnterMove()
                 return
             }
 
             let originText = String(Array(text.characters)[0...1])
-            let destinationText = String(Array(text.characters)[2...4])
+            let destinationText = String(Array(text.characters)[2...3])
 
             guard let originSquare = Square(originText),
                 let destinationSquare = Square(destinationText) else {
