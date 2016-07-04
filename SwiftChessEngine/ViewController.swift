@@ -65,6 +65,49 @@ final class EngineViewController: UIViewController {
         self.present(alert, animated: true)
     }
 
+    private func presentAlertViewToEnterText(title: String, textEntered: (String) -> ()) {
+        let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: "OK", style: .`default`) { [unowned alert] _ in
+            let enteredText = alert.textFields!.first!.text ?? ""
+
+            self.dismiss(animated: true)
+            textEntered(enteredText)
+        }
+        alert.addAction(dismissAction)
+
+        alert.addTextField()
+        
+        self.present(alert, animated: true)
+    }
+
+    private func presentAlertViewsToEnterMove() {
+        self.presentAlertViewToEnterText(title: "From square") { text in
+            guard text.characters.count == 4 else {
+                self.presentAlertViewsToEnterMove()
+                return
+            }
+
+            let originText = String(Array(text.characters)[0...1])
+            let destinationText = String(Array(text.characters)[2...4])
+
+            guard let originSquare = Square(originText),
+                let destinationSquare = Square(destinationText) else {
+                    self.presentAlertViewsToEnterMove()
+                    return
+            }
+
+            let move = Move(start: originSquare, end: destinationSquare)
+            do {
+                try self.apply(move)
+                self.tick()
+            }
+            catch {
+                print("Invalid move: \(error)")
+                self.presentAlertViewsToEnterMove()
+            }
+        }
+    }
+
     var calculating: Bool = false {
         didSet {
             self.toggleCalculationButton.setTitle(calculating ? "Stop calculating" : "Start calculating", for: [])
@@ -80,19 +123,33 @@ final class EngineViewController: UIViewController {
         }
     }
 
+    func apply(_ move: Move) throws {
+        print("Applying move \(move)")
+
+        try self.engine.game.execute(move: move)
+        self.currentBoard = self.engine.game.position.board
+    }
+
     var totalMovesAnalized = 0
+
+    let computerSide = Color.black
 
     private func tick() {
         guard self.calculating else { return }
 
+        guard self.engine.game.playerTurn == self.computerSide else {
+            self.presentAlertViewsToEnterMove()
+            return
+        }
+
         self.engineQueue.async {
             do {
+                print("Calculating from position \(self.engine.game.position.fen())")
                 let analysis = try self.engine.bestMove(maxDepth: EngineViewController.maxDepth)
 
                 DispatchQueue.main.async {
                     if let move = analysis.move {
-                        try! self.engine.game.execute(move: move)
-                        self.currentBoard = self.engine.game.position.board
+                        try! self.apply(move)
                     }
 
                     self.totalMovesAnalized += analysis.movesAnalized
@@ -112,5 +169,3 @@ final class EngineViewController: UIViewController {
         self.calculating = !self.calculating
     }
 }
-
-
