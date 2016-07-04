@@ -147,6 +147,21 @@ private extension Game {
     }
 }
 
+private let queue = DispatchQueue(label: "evaluation", attributes: [.concurrent])
+
+extension Array {
+    var splitIntoTwo: ([Element], [Element]) {
+        guard !self.isEmpty else {
+            return ([], [])
+        }
+        guard self.count > 2 else {
+            return (self.first.map { [$0] } ?? [], self.last.map { [$0] } ?? [])
+        }
+
+        return (Array(self[0...self.count/2]), Array(self[((self.count / 2) + 1)...(self.count - 1)]))
+    }
+}
+
 private extension Game {
     func deepEvaluation(depth: Int) throws -> ChessEngine.PositionAnalysis {
         return try self.deepEvaluation(depth: depth, alpha: ChessEngine.Valuation.infinity.negated(), beta: ChessEngine.Valuation.infinity)
@@ -179,41 +194,67 @@ private extension Game {
         var bestValuation: ChessEngine.Valuation = movingSide.isWhite ? Double.infinity.negated() : Double.infinity
         var movesAnalized = 0
 
-        var alpha = alpha
-        var beta = beta
+        func calculate(moves: [Move], game: Game) throws -> ChessEngine.PositionAnalysis {
+            var alpha = alpha
+            var beta = beta
 
-        for move in availableMoves {
-            try self.execute(move: move)
+            for move in moves {
+                try game.execute(move: move)
 
-            let analysis = try self.deepEvaluation(depth: depth - 1, alpha: alpha, beta: beta)
-            self.undoMove()
+                let analysis = try game.deepEvaluation(depth: depth - 1, alpha: alpha, beta: beta)
+                game.undoMove()
 
-            movesAnalized += analysis.movesAnalized
+                movesAnalized += analysis.movesAnalized
 
-            if movingSide.isWhite {
-                if analysis.valuation > alpha {
-                    alpha = analysis.valuation
-                    bestValuation = analysis.valuation
-                    bestMove = move
+                if movingSide.isWhite {
+                    if analysis.valuation > alpha {
+                        alpha = analysis.valuation
+                        bestValuation = analysis.valuation
+                        bestMove = move
+                    }
+                    if alpha >= beta {
+                        break
+                    }
                 }
-                if alpha >= beta {
-                    break
+                else {
+                    if analysis.valuation < beta {
+                        beta = analysis.valuation
+                        bestValuation = analysis.valuation
+                        bestMove = move
+                    }
+
+                    if beta <= alpha {
+                        break
+                    }
                 }
             }
-            else {
-                if analysis.valuation < beta {
-                    beta = analysis.valuation
-                    bestValuation = analysis.valuation
-                    bestMove = move
-                }
 
-                if beta <= alpha {
-                    break
-                }
-            }
+            return ChessEngine.PositionAnalysis(move: bestMove, valuation: bestValuation, movesAnalized: movesAnalized)
         }
 
-        return ChessEngine.PositionAnalysis(move: bestMove, valuation: bestValuation, movesAnalized: movesAnalized)
+        let gameCopy1 = self.copy()
+        let gameCopy2 = self.copy()
+
+        let (firstHalf, secondHalf) = availableMoves.splitIntoTwo
+
+        var analysis1: ChessEngine.PositionAnalysis!
+        var analysis2: ChessEngine.PositionAnalysis!
+
+        let group = DispatchGroup()
+
+        queue.async(group: group) {
+            analysis1 = try! calculate(moves: firstHalf, game: gameCopy1)
+        }
+
+        queue.async(group: group) {
+            analysis2 = try! calculate(moves: secondHalf, game: gameCopy2)
+        }
+
+        group.wait()
+
+        let bestAnalysis = ((movingSide.isWhite ? (analysis1.valuation > analysis2.valuation ? analysis1 : analysis2) : analysis1.valuation > analysis2.valuation ? analysis2 : analysis1))
+
+        return ChessEngine.PositionAnalysis(move: bestAnalysis!.move, valuation: bestAnalysis!.valuation, movesAnalized: analysis1.movesAnalized + analysis2.movesAnalized)
     }
 }
 
