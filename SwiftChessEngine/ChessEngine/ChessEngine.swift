@@ -161,7 +161,7 @@ private extension Game {
 
         let availableMoves = self.availableMoves()
 
-        guard !availableMoves.isEmpty else {
+        guard availableMoves.count > 1 else {
             let valuation: ChessEngine.Valuation
 
             switch self.outcome {
@@ -169,10 +169,10 @@ private extension Game {
                     valuation = color.isWhite ? ChessEngine.Valuation.infinity : ChessEngine.Valuation.infinity.negated()
 
                 default:
-                    valuation = 0.0
+                    valuation = self.currentPositionValuation()
             }
 
-            return ChessEngine.PositionAnalysis(move: nil, valuation: valuation, movesAnalized: 1)
+            return ChessEngine.PositionAnalysis(move: availableMoves.first, valuation: valuation, movesAnalized: 1)
         }
 
         var bestMove: Move?
