@@ -15,7 +15,13 @@ extension Collection where Iterator.Element == Piece {
     }
 }
 
-extension Board {
+private extension Board {
+    private static let initialBoard = Board()
+
+    func pieces(for color: Color) -> [Piece] {
+        return color.isWhite ? self.whitePieces : self.blackPieces
+    }
+
     func allAttackers(attackingColor: Color) -> Int {
         let oppositePiecesSquares = self.squares(for: attackingColor.inverse())
 
@@ -26,6 +32,30 @@ extension Board {
         }
 
         return total
+    }
+
+    private func piecesOutsideOriginalPosition(for color: Color) -> Int {
+        let pieces = self.pieces(for: color)
+
+        var count = 0
+
+        for piece in pieces {
+            if self.bitboard(for: piece) != Board.initialBoard.bitboard(for: piece) {
+                count += 1
+            }
+        }
+
+        return count
+    }
+
+    func doubledPawns(for color: Color) -> Int {
+        let pawnFiles = self.pieces(for: color)
+            .filter { $0.isPawn }
+            .flatMap { self.locations(for: $0).map { $0.file.rawValue } }
+
+        let uniqueFiles = Set(pawnFiles)
+
+        return pawnFiles.count - uniqueFiles.count
     }
 }
 
@@ -45,11 +75,12 @@ private extension CastlingRights {
 extension Game {
     func currentPositionValuation() -> ChessEngine.Valuation {
         let movingSide = self.position.playerTurn
+        let oppositeSide = movingSide.inverse()
         let board = self.position.board
 
         var extras: ChessEngine.Valuation = 0
 
-        if board.kingIsChecked(for: movingSide.inverse()) {
+        if board.kingIsChecked(for: oppositeSide) {
             extras += 1
         }
         else if board.kingIsChecked(for: movingSide) {
@@ -57,15 +88,20 @@ extension Game {
         }
 
         let myPieces = board.pieceCount(for: movingSide)
-        let theirPieces = board.pieceCount(for: movingSide.inverse())
+        let theirPieces = board.pieceCount(for: oppositeSide)
 
         extras += Double(myPieces - theirPieces) * 0.1
 
         extras += 0.001 * Double(board.allAttackers(attackingColor: movingSide))
-        extras -= 0.0005 * Double(board.allAttackers(attackingColor: movingSide.inverse()))
+        extras -= 0.0005 * Double(board.allAttackers(attackingColor: oppositeSide))
+        extras += 0.01 * Double(board.piecesOutsideOriginalPosition(for: movingSide))
+        extras -= 0.01 * Double(board.piecesOutsideOriginalPosition(for: oppositeSide))
+
+        extras -= 0.01 * Double(board.doubledPawns(for: movingSide))
+        extras += 0.01 * Double(board.doubledPawns(for: oppositeSide))
 
         let weHaveCastled = self.playedMoves(bySide: movingSide).contains { $0.isCastle }
-        let theyHaveCastled = self.playedMoves(bySide: movingSide.inverse()).contains { $0.isCastle }
+        let theyHaveCastled = self.playedMoves(bySide: oppositeSide).contains { $0.isCastle }
 
         let pointsForCastling: ChessEngine.Valuation = 2
         let cantCastlePenalty: ChessEngine.Valuation = -pointsForCastling
