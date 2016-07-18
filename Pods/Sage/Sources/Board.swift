@@ -72,7 +72,7 @@ public struct Board: Hashable, CustomStringConvertible {
 
         /// A textual representation of `self`.
         public var description: String {
-            return "Space(\(name), \(piece.map({ String($0) }) ?? "nil"))"
+            return "Space(\(name), \(piece._altDescription)"
         }
 
         /// The hash value.
@@ -284,9 +284,14 @@ public struct Board: Hashable, CustomStringConvertible {
         return pieces.filter({ $0.color.isBlack })
     }
 
+    /// A bitboard for the occupied spaces of `self`.
+    public var occupiedSpaces: Bitboard {
+        return _bitboards.reduce(0, combine: |)
+    }
+
     /// A bitboard for the empty spaces of `self`.
     public var emptySpaces: Bitboard {
-        return ~_bitboards.reduce(0, combine: |)
+        return ~occupiedSpaces
     }
 
     /// A textual representation of `self`.
@@ -342,7 +347,7 @@ public struct Board: Hashable, CustomStringConvertible {
     /// - parameter variant: The variant to populate the board for. Won't populate if `nil`. Default is `Standard`.
     public init(variant: Variant? = ._standard) {
         #if swift(>=3)
-            _bitboards = ContiguousArray(repeatElement(0, count: 12))
+            _bitboards = ContiguousArray(repeating: 0, count: 12)
         #else
             _bitboards = ContiguousArray(count: 12, repeatedValue: 0)
         #endif
@@ -411,6 +416,36 @@ public struct Board: Hashable, CustomStringConvertible {
         self = board
     }
 
+    /// Create a chess board from arrays of piece characters.
+    ///
+    /// Returns `nil` if a piece can't be initialized from a character. Characters beyond the 8x8 area are ignored.
+    /// Empty spaces are denoted with a whitespace or period.
+    ///
+    /// ```swift
+    /// Board(pieces: [["r", "n", "b", "q", "k", "b", "n", "r"],
+    ///                ["p", "p", "p", "p", "p", "p", "p", "p"],
+    ///                [" ", " ", " ", " ", " ", " ", " ", " "],
+    ///                [" ", " ", " ", " ", " ", " ", " ", " "],
+    ///                [" ", " ", " ", " ", " ", " ", " ", " "],
+    ///                [" ", " ", " ", " ", " ", " ", " ", " "],
+    ///                ["P", "P", "P", "P", "P", "P", "P", "P"],
+    ///                ["R", "N", "B", "Q", "K", "B", "N", "R"]])
+    /// ```
+    public init?(pieces: [[Character]]) {
+        self.init(variant: nil)
+        for rankIndex in pieces.indices {
+            guard let rank = Rank(index: rankIndex)?.opposite() else { break }
+            for fileIndex in pieces[rankIndex].indices {
+                guard let file = File(index: fileIndex) else { break }
+                let pieceChar = pieces[rankIndex][fileIndex]
+                if pieceChar != " " && pieceChar != "." {
+                    guard let piece = Piece(character: pieceChar) else { return nil }
+                    self[(file, rank)] = piece
+                }
+            }
+        }
+    }
+
     /// Gets and sets a piece at `location`.
     public subscript(location: Location) -> Piece? {
         get {
@@ -444,7 +479,7 @@ public struct Board: Hashable, CustomStringConvertible {
     /// Gets and sets the bitboard for `piece`.
     internal subscript(piece: Piece) -> Bitboard {
         get {
-            return _bitboards[piece.hashValue] ?? Bitboard()
+            return _bitboards[piece.hashValue]
         }
         set {
             _bitboards[piece.hashValue] = newValue
@@ -452,7 +487,7 @@ public struct Board: Hashable, CustomStringConvertible {
     }
 
     /// Returns `self` flipped horizontally.
-    private func _flippedHorizontally() -> Board {
+    public func flippedHorizontally() -> Board {
         var board = self
         for index in _bitboards.indices {
             board._bitboards[index].flipHorizontally()
@@ -461,7 +496,7 @@ public struct Board: Hashable, CustomStringConvertible {
     }
 
     /// Returns `self` flipped vertically.
-    private func _flippedVertically() -> Board {
+    public func flippedVertically() -> Board {
         var board = self
         for index in _bitboards.indices {
             board._bitboards[index].flipVertically()
@@ -474,45 +509,10 @@ public struct Board: Hashable, CustomStringConvertible {
         self = Board(variant: nil)
     }
 
-    #if swift(>=3)
-
     /// Populates `self` with with all of the pieces at their proper locations for the given chess variant.
-    public mutating func populate(for variant: Variant = .standard) {
+    public mutating func populate(for variant: Variant = ._standard) {
         self = Board(variant: variant)
     }
-
-    /// Returns `self` flipped horizontally.
-    @warn_unused_result(mutable_variant:"flipHorizontally")
-    public func flippedHorizontally() -> Board {
-        return _flippedHorizontally()
-    }
-
-    /// Returns `self` flipped vertically.
-    @warn_unused_result(mutable_variant:"flipVertically")
-    public func flippedVertically() -> Board {
-        return _flippedVertically()
-    }
-
-    #else
-
-    /// Populates `self` with with all of the pieces at their proper locations for the given chess variant.
-    public mutating func populate(for variant: Variant = .Standard) {
-        self = Board(variant: variant)
-    }
-
-    /// Returns `self` flipped horizontally.
-    @warn_unused_result(mutable_variant="flipHorizontally")
-    public func flippedHorizontally() -> Board {
-        return _flippedHorizontally()
-    }
-
-    /// Returns `self` flipped vertically.
-    @warn_unused_result(mutable_variant="flipVertically")
-    public func flippedVertically() -> Board {
-        return _flippedVertically()
-    }
-
-    #endif
 
     /// Flips `self` horizontally.
     public mutating func flipHorizontally() {
@@ -525,7 +525,6 @@ public struct Board: Hashable, CustomStringConvertible {
     }
 
     /// Returns the number of pieces for `color`, or all if `nil`.
-    @warn_unused_result
     public func pieceCount(for color: Color? = nil) -> Int {
         if let color = color {
             return bitboard(for: color).count
@@ -535,36 +534,26 @@ public struct Board: Hashable, CustomStringConvertible {
     }
 
     /// Returns the number of `piece` in `self`.
-    @warn_unused_result
     public func count(of piece: Piece) -> Int {
         return bitboard(for: piece).count
     }
 
     /// Returns the bitboard for `piece`.
-    @warn_unused_result
     public func bitboard(for piece: Piece) -> Bitboard {
         return self[piece]
     }
 
     /// Returns the bitboard for `color`.
-    @warn_unused_result
     public func bitboard(for color: Color) -> Bitboard {
         return Piece.pieces(for: color).map({ self[$0] }).reduce(0, combine: |)
-    }
-
-    /// Returns the bitboard for all pieces.
-    @warn_unused_result
-    public func bitboard() -> Bitboard {
-        return _bitboards.reduce(0, combine: |)
     }
 
     /// Returns the attackers to `square` corresponding to `color`.
     ///
     /// - parameter square: The `Square` being attacked.
     /// - parameter color: The `Color` of the attackers.
-    @warn_unused_result
     public func attackers(to square: Square, color: Color) -> Bitboard {
-        let all = bitboard()
+        let all = occupiedSpaces
         let attackPieces = Piece.pieces(for: color)
         let playerPieces = Piece.pieces(for: color.inverse())
         let attacks = playerPieces.map({ piece in
@@ -582,7 +571,6 @@ public struct Board: Hashable, CustomStringConvertible {
     ///
     /// - returns: A bitboard of all attackers, or 0 if the king does not exist or if there are no pieces attacking the
     ///            king.
-    @warn_unused_result
     public func attackersToKing(for color: Color) -> Bitboard {
         guard let square = squareForKing(for: color) else {
             return 0
@@ -591,31 +579,26 @@ public struct Board: Hashable, CustomStringConvertible {
     }
 
     /// Returns `true` if the king for `color` is in check.
-    @warn_unused_result
     public func kingIsChecked(for color: Color) -> Bool {
         return attackersToKing(for: color) != 0
     }
 
     /// Returns the spaces at `file`.
-    @warn_unused_result
     public func spaces(at file: File) -> [Space] {
         return Rank.all.map { space(at: (file, $0)) }
     }
 
     /// Returns the spaces at `rank`.
-    @warn_unused_result
     public func spaces(at rank: Rank) -> [Space] {
         return File.all.map { space(at: ($0, rank)) }
     }
 
     /// Returns the space at `location`.
-    @warn_unused_result
     public func space(at location: Location) -> Space {
         return Space(piece: self[location], location: location)
     }
 
     /// Returns the square at `location`.
-    @warn_unused_result
     public func space(at square: Square) -> Space {
         return Space(piece: self[square], square: square)
     }
@@ -679,25 +662,21 @@ public struct Board: Hashable, CustomStringConvertible {
     }
 
     /// Returns the locations where `piece` exists.
-    @warn_unused_result
     public func locations(for piece: Piece) -> [Location] {
         return bitboard(for: piece).map({ $0.location })
     }
 
     /// Returns the squares where `piece` exists.
-    @warn_unused_result
     public func squares(for piece: Piece) -> [Square] {
         return Array(bitboard(for: piece))
     }
 
     /// Returns the squares where pieces for `color` exist.
-    @warn_unused_result
     public func squares(for color: Color) -> [Square] {
         return Array(bitboard(for: color))
     }
 
     /// Returns the square of the king for `color`, if any.
-    @warn_unused_result
     public func squareForKing(for color: Color) -> Square? {
         return bitboard(for: Piece(king: color)).lsbSquare
     }
@@ -797,7 +776,6 @@ extension Board: CustomPlaygroundQuickLookable {
     }
     #else
     /// Returns the `PlaygroundQuickLook` for `self`.
-    @warn_unused_result
     public func customPlaygroundQuickLook() -> PlaygroundQuickLook {
         return _customPlaygroundQuickLook
     }
@@ -808,13 +786,11 @@ extension Board: CustomPlaygroundQuickLookable {
 #endif
 
 /// Returns `true` if both boards are the same.
-@warn_unused_result
 public func == (lhs: Board, rhs: Board) -> Bool {
     return lhs._bitboards == rhs._bitboards
 }
 
 /// Returns `true` if both spaces are the same.
-@warn_unused_result
 public func == (lhs: Board.Space, rhs: Board.Space) -> Bool {
     return lhs.piece == rhs.piece
         && lhs.file == rhs.file

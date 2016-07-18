@@ -1,6 +1,6 @@
 {
   "name": "Sage",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "summary": "A cross-platform chess library for Swift.",
   "homepage": "https://github.com/nvzqz/Sage",
   "license": {
@@ -16,7 +16,7 @@
   },
   "source": {
     "git": "https://github.com/nvzqz/Sage.git",
-    "tag": "v1.0.0"
+    "tag": "v2.0.0"
   },
   "source_files": "Sources/*.swift"
 }

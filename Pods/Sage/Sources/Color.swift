@@ -34,6 +34,9 @@ public enum Color: String, CustomStringConvertible {
     /// Black color regardless of Swift version.
     internal static let _black = Color.black
 
+    /// An array of all colors.
+    public static let all: [Color] = [.white, .black]
+
     #else
 
     /// White chess color.
@@ -47,6 +50,9 @@ public enum Color: String, CustomStringConvertible {
 
     /// Black color regardless of Swift version.
     internal static let _black = Color.Black
+
+    /// An array of all colors.
+    public static let all: [Color] = [.White, .Black]
 
     #endif
 
@@ -79,23 +85,10 @@ public enum Color: String, CustomStringConvertible {
         }
     }
 
-    #if swift(>=3)
-
     /// Returns the inverse of `self`.
-    @warn_unused_result(mutable_variant:"invert")
     public func inverse() -> Color {
         return self.isWhite ? ._black : ._white
     }
-
-    #else
-
-    /// Returns the inverse of `self`.
-    @warn_unused_result(mutable_variant="invert")
-    public func inverse() -> Color {
-        return self.isWhite ? ._black : ._white
-    }
-
-    #endif
 
     /// Inverts the color of `self`.
     public mutating func invert() {

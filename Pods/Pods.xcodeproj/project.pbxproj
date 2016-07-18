@@ -7,93 +7,120 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		05F3A244F95306B92856ADA9BCA84532 /* Pods-SwiftChessEngine-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 8DF8B05F1EB57C9175990C34DAB50B59 /* Pods-SwiftChessEngine-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		083AD3001BA4D26549CAE4A39FCDF287 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E4E89230EF59BC255123B67864ACF77 /* Foundation.framework */; };
-		1A21501A3AB47097D4608F6FBDB5FC25 /* Sage-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 33F7FBC26EC1B59D66101710E058F594 /* Sage-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		2DEC0E2FE10E616A34BC593B5D98766B /* InternalTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3924A0F60D5B81752AE0B06C60BB631D /* InternalTypes.swift */; };
-		2E4C6A95F49E78A385A69CBD635A19D1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E4E89230EF59BC255123B67864ACF77 /* Foundation.framework */; };
-		4C95782F94DB85B450AD301A8EB5BE30 /* Sage-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CEFFC4408C01354BA3E577D9113CA59 /* Sage-dummy.m */; };
-		53C8BA6D1C5342C29ED3205C6D40DDEB /* Rank.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE6ECE9C7BDAFCAFAE07C0F3AD508E9 /* Rank.swift */; };
-		592BE427E8F7E86944EEA945890087BF /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D9E6D67B9223530969944C423C48112 /* File.swift */; };
-		67A3C1F3D24EE54F355E167FCF728163 /* Bitboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D3D5E82358473F5748C8EFFDC9B535 /* Bitboard.swift */; };
-		6CEA600C5EBFB9818750FB0561614715 /* Piece.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A25B89B0C2E6A5C0E6ADCA08850F5E2 /* Piece.swift */; };
-		6DBB6C498CEF9C07316D34ACF2B08959 /* CastlingRights.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B78D8413D4987BBC04C89D240DA7461 /* CastlingRights.swift */; };
-		7B80A5E00C43841E21E98BA1B819245D /* Square.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FF6E0D73D50E5418BFAA9E87E19A9C /* Square.swift */; };
-		82869D46C6010CF609D582E4D4DF9986 /* Pods-SwiftChessEngine-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = D58497CC085E4C81BC658E95BCEA551D /* Pods-SwiftChessEngine-dummy.m */; };
-		A967931E408227919FB18F4021C6780E /* Move.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084DCB6A72FC290E8D25086F251499BC /* Move.swift */; };
-		BFB572CD43A51D49638DA267D38C2689 /* Variant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061D4413B2475EE772CF127B264C2D75 /* Variant.swift */; };
-		C05AEDA27A98DA411D601E15B5D59417 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19B467F3417489354AA7B48E7CFD6352 /* Board.swift */; };
-		C2C6AA19C5162CD7333B199D21354554 /* Sequence+Sage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F26CDC63B9EB2FD031D41CC3A2DAE75D /* Sequence+Sage.swift */; };
-		F30C933CFF97579D2C71A3ED265495EF /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF027A51D7FD47DF06E061415D973B8 /* Game.swift */; };
-		FB86A15B235143A3F90D5CA5F3212819 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E66C8C56C7256C610A5CC0BEB41DC0 /* Color.swift */; };
+		03C95F68B9DB752B52660EBFC7D75909 /* Sage-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6832245672A7937418CBB86B8D888E15 /* Sage-dummy.m */; };
+		21E5A65F1FC28553DDCB594A8C6B821C /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF11D27679C655B940350ED98EA8958 /* Board.swift */; };
+		2986A186FFE767E8D34CA0FB949B20D7 /* Piece.swift in Sources */ = {isa = PBXBuildFile; fileRef = E86EDBEF8116E689F5ECE1137C28D228 /* Piece.swift */; };
+		43B2B3D488510A6AD4EFB447E44FEE95 /* Rank.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED0AF3B0849219EB99D30DE5C169936 /* Rank.swift */; };
+		4EBEAA594450D24B88C717746455EEB4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEC22C73C1608DFA5D5D78BDCB218219 /* Foundation.framework */; };
+		4ED46CEFA310F3C9B329642B437D026E /* PGN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D966200EDB21D6D6A15A20DBCD26924 /* PGN.swift */; };
+		5560ADD84783DBBA475F141BFE5BDBB4 /* Move.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC5A0A0F8BC4A8B95ADBCDF62332218A /* Move.swift */; };
+		562131C98098CD0826E4E5F159AFF3DF /* Pods-SwiftChessEngine-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 8DF8B05F1EB57C9175990C34DAB50B59 /* Pods-SwiftChessEngine-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		57A638D36D881A7ADA9DF0AF82B429B9 /* Pods-SwiftChessEngine-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = D58497CC085E4C81BC658E95BCEA551D /* Pods-SwiftChessEngine-dummy.m */; };
+		67E6E257ABFD6332A19CC237C02779C8 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2FB09AEF42416E40958E7F586A83C38 /* Player.swift */; };
+		8D3F59434B4C43037531E2EA029F2659 /* Variant.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B24ED54E3AE78269F77825CD7FA18F /* Variant.swift */; };
+		909D45EE52FE4E9AE38D715D9FEFBBBE /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EE50901EF3C53CEB3A8F81CBE3AEB5 /* Color.swift */; };
+		91E3D8FE707A828BA7FDA568A9C4DAC2 /* Sequence+Sage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33EF3B08FA51364E786C0BE8969C4FE2 /* Sequence+Sage.swift */; };
+		929343DD42DE7F6E692171F6FBF4F40D /* Sage-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = DD2D30022E43A4E32B6D3743188D3A63 /* Sage-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9D59DD23FE7F44B4F5919C7513FF79A2 /* InternalTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DFA4C3F0CFD74D42E45EBEB5B5DCFAB /* InternalTypes.swift */; };
+		AA2C00737467B520D7CC630899D223D8 /* CastlingRights.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0195257E0C7369A634DE19594929C7D7 /* CastlingRights.swift */; };
+		AE578EB6E8F8598A66D144AE21D33D0C /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4233BE7027705296442F5E9FEFD8333 /* File.swift */; };
+		C1F506F532F596056F164769DD945779 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57084FE015FF47B58308CA63762328FA /* Game.swift */; };
+		D01AA92852577E83789474EA376C6C9F /* Bitboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830E8A7AC477A86C3A99896FC7AFA0CC /* Bitboard.swift */; };
+		E4FEAA5279D57B2177A3B8CA1D8AAB2F /* Square.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB1E7333F4BDC5103A96B710237E97F /* Square.swift */; };
+		F28F01453E7E2CE0A2AC55ED300808CD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEC22C73C1608DFA5D5D78BDCB218219 /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		7C2521EC15A1069CFD12666710D19BA2 /* PBXContainerItemProxy */ = {
+		26BADB75670613473C346C7F2A50149D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 95F8CA8BFD072EECF19CA1FF5BC5CE2A;
+			remoteGlobalIDString = CF5459EF9BFDF3B4F2D419EF54DA0910;
 			remoteInfo = Sage;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		061D4413B2475EE772CF127B264C2D75 /* Variant.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Variant.swift; path = Sources/Variant.swift; sourceTree = "<group>"; };
-		084DCB6A72FC290E8D25086F251499BC /* Move.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Move.swift; path = Sources/Move.swift; sourceTree = "<group>"; };
-		128F3B0E8A73AF0B846ED3B29FD76CF8 /* Sage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Sage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		13C0D80CEE25F2BD47CBD5C6F782E4EF /* Sage-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Sage-prefix.pch"; sourceTree = "<group>"; };
-		1419A373300CC34171690A0D36B6C2C4 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		17E66C8C56C7256C610A5CC0BEB41DC0 /* Color.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Color.swift; path = Sources/Color.swift; sourceTree = "<group>"; };
-		187F9FBD37F7CD48CA7550F456C44EE3 /* Sage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Sage.xcconfig; sourceTree = "<group>"; };
-		19B467F3417489354AA7B48E7CFD6352 /* Board.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Board.swift; path = Sources/Board.swift; sourceTree = "<group>"; };
+		0195257E0C7369A634DE19594929C7D7 /* CastlingRights.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CastlingRights.swift; path = Sources/CastlingRights.swift; sourceTree = "<group>"; };
+		0DFA4C3F0CFD74D42E45EBEB5B5DCFAB /* InternalTypes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = InternalTypes.swift; path = Sources/InternalTypes.swift; sourceTree = "<group>"; };
+		1868ACECB7C9110FBCE726914D73B785 /* Pods_SwiftChessEngine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftChessEngine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF4725EFB9EBAB06D2AD55C678CDE34 /* Pods-SwiftChessEngine.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-SwiftChessEngine.modulemap"; sourceTree = "<group>"; };
-		33F7FBC26EC1B59D66101710E058F594 /* Sage-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Sage-umbrella.h"; sourceTree = "<group>"; };
-		3924A0F60D5B81752AE0B06C60BB631D /* InternalTypes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = InternalTypes.swift; path = Sources/InternalTypes.swift; sourceTree = "<group>"; };
-		3B78D8413D4987BBC04C89D240DA7461 /* CastlingRights.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CastlingRights.swift; path = Sources/CastlingRights.swift; sourceTree = "<group>"; };
-		3E4E89230EF59BC255123B67864ACF77 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		3EF027A51D7FD47DF06E061415D973B8 /* Game.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Game.swift; path = Sources/Game.swift; sourceTree = "<group>"; };
-		5CEFFC4408C01354BA3E577D9113CA59 /* Sage-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Sage-dummy.m"; sourceTree = "<group>"; };
+		3081E6717C1261B20326AA835DEE42AA /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		33EF3B08FA51364E786C0BE8969C4FE2 /* Sequence+Sage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Sequence+Sage.swift"; path = "Sources/Sequence+Sage.swift"; sourceTree = "<group>"; };
+		4D966200EDB21D6D6A15A20DBCD26924 /* PGN.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PGN.swift; path = Sources/PGN.swift; sourceTree = "<group>"; };
+		5260DF25C8E09191FA9C80B7D236B3C1 /* Sage.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = Sage.modulemap; sourceTree = "<group>"; };
+		57084FE015FF47B58308CA63762328FA /* Game.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Game.swift; path = Sources/Game.swift; sourceTree = "<group>"; };
 		60282AAAE0D8E4F42ABCFD50D027EAE2 /* Pods-SwiftChessEngine-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SwiftChessEngine-resources.sh"; sourceTree = "<group>"; };
+		6832245672A7937418CBB86B8D888E15 /* Sage-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Sage-dummy.m"; sourceTree = "<group>"; };
 		6A0C03D32F3BE5F547B0143850F86630 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6F13B6C0B815DFADF42E7E9D7CD6F2C7 /* Sage-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Sage-prefix.pch"; sourceTree = "<group>"; };
 		722E3FC5290EC68C32405FD653838141 /* Pods-SwiftChessEngine.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SwiftChessEngine.debug.xcconfig"; sourceTree = "<group>"; };
-		7D9E6D67B9223530969944C423C48112 /* File.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = File.swift; path = Sources/File.swift; sourceTree = "<group>"; };
+		830E8A7AC477A86C3A99896FC7AFA0CC /* Bitboard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Bitboard.swift; path = Sources/Bitboard.swift; sourceTree = "<group>"; };
 		89F759ACCA649810AF609B5071E09B0D /* Pods-SwiftChessEngine.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SwiftChessEngine.release.xcconfig"; sourceTree = "<group>"; };
-		8A25B89B0C2E6A5C0E6ADCA08850F5E2 /* Piece.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Piece.swift; path = Sources/Piece.swift; sourceTree = "<group>"; };
-		8BE6ECE9C7BDAFCAFAE07C0F3AD508E9 /* Rank.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Rank.swift; path = Sources/Rank.swift; sourceTree = "<group>"; };
 		8DF8B05F1EB57C9175990C34DAB50B59 /* Pods-SwiftChessEngine-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-SwiftChessEngine-umbrella.h"; sourceTree = "<group>"; };
-		99B4F9AEEFC8B8A9C0EDD5B653985A11 /* Pods_SwiftChessEngine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftChessEngine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A6FF6E0D73D50E5418BFAA9E87E19A9C /* Square.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Square.swift; path = Sources/Square.swift; sourceTree = "<group>"; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9EA84E6BE14B1E580D852F075145C93E /* Sage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Sage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A7EE50901EF3C53CEB3A8F81CBE3AEB5 /* Color.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Color.swift; path = Sources/Color.swift; sourceTree = "<group>"; };
+		A9B24ED54E3AE78269F77825CD7FA18F /* Variant.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Variant.swift; path = Sources/Variant.swift; sourceTree = "<group>"; };
+		AAF11D27679C655B940350ED98EA8958 /* Board.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Board.swift; path = Sources/Board.swift; sourceTree = "<group>"; };
+		B417455E2A19CBE122CFFB13A9740460 /* Sage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Sage.xcconfig; sourceTree = "<group>"; };
 		B622AD762228D96C952C4080234F539A /* Pods-SwiftChessEngine-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SwiftChessEngine-frameworks.sh"; sourceTree = "<group>"; };
-		B9D3D5E82358473F5748C8EFFDC9B535 /* Bitboard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Bitboard.swift; path = Sources/Bitboard.swift; sourceTree = "<group>"; };
-		BA6428E9F66FD5A23C0A2E06ED26CD2F /* Podfile */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		CC036F3A33B25CE0545306BA00190DFD /* Sage.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = Sage.modulemap; sourceTree = "<group>"; };
+		CEC22C73C1608DFA5D5D78BDCB218219 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		D1576B4C35F273189D6A3E71F78135D2 /* Pods-SwiftChessEngine-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-SwiftChessEngine-acknowledgements.markdown"; sourceTree = "<group>"; };
 		D58497CC085E4C81BC658E95BCEA551D /* Pods-SwiftChessEngine-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SwiftChessEngine-dummy.m"; sourceTree = "<group>"; };
-		F26CDC63B9EB2FD031D41CC3A2DAE75D /* Sequence+Sage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Sequence+Sage.swift"; path = "Sources/Sequence+Sage.swift"; sourceTree = "<group>"; };
+		DC5A0A0F8BC4A8B95ADBCDF62332218A /* Move.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Move.swift; path = Sources/Move.swift; sourceTree = "<group>"; };
+		DD2D30022E43A4E32B6D3743188D3A63 /* Sage-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Sage-umbrella.h"; sourceTree = "<group>"; };
+		E2FB09AEF42416E40958E7F586A83C38 /* Player.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Player.swift; path = Sources/Player.swift; sourceTree = "<group>"; };
+		E4233BE7027705296442F5E9FEFD8333 /* File.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = File.swift; path = Sources/File.swift; sourceTree = "<group>"; };
+		E86EDBEF8116E689F5ECE1137C28D228 /* Piece.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Piece.swift; path = Sources/Piece.swift; sourceTree = "<group>"; };
+		EED0AF3B0849219EB99D30DE5C169936 /* Rank.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Rank.swift; path = Sources/Rank.swift; sourceTree = "<group>"; };
 		FF25E1248DAA28EBDC5F2440DE040D27 /* Pods-SwiftChessEngine-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SwiftChessEngine-acknowledgements.plist"; sourceTree = "<group>"; };
+		FFB1E7333F4BDC5103A96B710237E97F /* Square.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Square.swift; path = Sources/Square.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		118A2AB8951908FC4552164D990DAA74 /* Frameworks */ = {
+		41327B2E8696A32B50C0119BF3683A69 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				083AD3001BA4D26549CAE4A39FCDF287 /* Foundation.framework in Frameworks */,
+				F28F01453E7E2CE0A2AC55ED300808CD /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		F325D8788232A8DA31B283F6EA3D4869 /* Frameworks */ = {
+		E5CFCA2C4147972D1A3C74FA609BAE63 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2E4C6A95F49E78A385A69CBD635A19D1 /* Foundation.framework in Frameworks */,
+				4EBEAA594450D24B88C717746455EEB4 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		12834E296C553DF25607F41CDB6CAA67 /* Sage */ = {
+			isa = PBXGroup;
+			children = (
+				830E8A7AC477A86C3A99896FC7AFA0CC /* Bitboard.swift */,
+				AAF11D27679C655B940350ED98EA8958 /* Board.swift */,
+				0195257E0C7369A634DE19594929C7D7 /* CastlingRights.swift */,
+				A7EE50901EF3C53CEB3A8F81CBE3AEB5 /* Color.swift */,
+				E4233BE7027705296442F5E9FEFD8333 /* File.swift */,
+				57084FE015FF47B58308CA63762328FA /* Game.swift */,
+				0DFA4C3F0CFD74D42E45EBEB5B5DCFAB /* InternalTypes.swift */,
+				DC5A0A0F8BC4A8B95ADBCDF62332218A /* Move.swift */,
+				4D966200EDB21D6D6A15A20DBCD26924 /* PGN.swift */,
+				E86EDBEF8116E689F5ECE1137C28D228 /* Piece.swift */,
+				E2FB09AEF42416E40958E7F586A83C38 /* Player.swift */,
+				EED0AF3B0849219EB99D30DE5C169936 /* Rank.swift */,
+				33EF3B08FA51364E786C0BE8969C4FE2 /* Sequence+Sage.swift */,
+				FFB1E7333F4BDC5103A96B710237E97F /* Square.swift */,
+				A9B24ED54E3AE78269F77825CD7FA18F /* Variant.swift */,
+				415C2E0282331AF44E03C7BB3E6FD61E /* Support Files */,
+			);
+			path = Sage;
+			sourceTree = "<group>";
+		};
 		3703CF6ED103C584482D3F762EC304A4 /* Pods-SwiftChessEngine */ = {
 			isa = PBXGroup;
 			children = (
@@ -112,83 +139,53 @@
 			path = "Target Support Files/Pods-SwiftChessEngine";
 			sourceTree = "<group>";
 		};
-		6E76546D78B3C2051DA34876F6AA39C8 /* Sage */ = {
+		3DCAB2B7CDE207B3958B6CB957FCC758 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
-				B9D3D5E82358473F5748C8EFFDC9B535 /* Bitboard.swift */,
-				19B467F3417489354AA7B48E7CFD6352 /* Board.swift */,
-				3B78D8413D4987BBC04C89D240DA7461 /* CastlingRights.swift */,
-				17E66C8C56C7256C610A5CC0BEB41DC0 /* Color.swift */,
-				7D9E6D67B9223530969944C423C48112 /* File.swift */,
-				3EF027A51D7FD47DF06E061415D973B8 /* Game.swift */,
-				3924A0F60D5B81752AE0B06C60BB631D /* InternalTypes.swift */,
-				084DCB6A72FC290E8D25086F251499BC /* Move.swift */,
-				8A25B89B0C2E6A5C0E6ADCA08850F5E2 /* Piece.swift */,
-				8BE6ECE9C7BDAFCAFAE07C0F3AD508E9 /* Rank.swift */,
-				F26CDC63B9EB2FD031D41CC3A2DAE75D /* Sequence+Sage.swift */,
-				A6FF6E0D73D50E5418BFAA9E87E19A9C /* Square.swift */,
-				061D4413B2475EE772CF127B264C2D75 /* Variant.swift */,
-				BA7FF7616E46BDF0D52587813E3000C5 /* Support Files */,
+				CEC22C73C1608DFA5D5D78BDCB218219 /* Foundation.framework */,
 			);
-			path = Sage;
+			name = iOS;
 			sourceTree = "<group>";
 		};
-		7DB346D0F39D3F0E887471402A8071AB = {
+		415C2E0282331AF44E03C7BB3E6FD61E /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				BA6428E9F66FD5A23C0A2E06ED26CD2F /* Podfile */,
-				BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */,
-				BFE4E7A73B14D94D98225EEC793964F9 /* Pods */,
-				8C3954AB5F7D56AF3FDF0D3B033F7992 /* Products */,
-				ED5892DA2029F07F6C7211D740BE03C1 /* Targets Support Files */,
-			);
-			sourceTree = "<group>";
-		};
-		8C3954AB5F7D56AF3FDF0D3B033F7992 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				99B4F9AEEFC8B8A9C0EDD5B653985A11 /* Pods_SwiftChessEngine.framework */,
-				128F3B0E8A73AF0B846ED3B29FD76CF8 /* Sage.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		BA7FF7616E46BDF0D52587813E3000C5 /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				1419A373300CC34171690A0D36B6C2C4 /* Info.plist */,
-				CC036F3A33B25CE0545306BA00190DFD /* Sage.modulemap */,
-				187F9FBD37F7CD48CA7550F456C44EE3 /* Sage.xcconfig */,
-				5CEFFC4408C01354BA3E577D9113CA59 /* Sage-dummy.m */,
-				13C0D80CEE25F2BD47CBD5C6F782E4EF /* Sage-prefix.pch */,
-				33F7FBC26EC1B59D66101710E058F594 /* Sage-umbrella.h */,
+				3081E6717C1261B20326AA835DEE42AA /* Info.plist */,
+				5260DF25C8E09191FA9C80B7D236B3C1 /* Sage.modulemap */,
+				B417455E2A19CBE122CFFB13A9740460 /* Sage.xcconfig */,
+				6832245672A7937418CBB86B8D888E15 /* Sage-dummy.m */,
+				6F13B6C0B815DFADF42E7E9D7CD6F2C7 /* Sage-prefix.pch */,
+				DD2D30022E43A4E32B6D3743188D3A63 /* Sage-umbrella.h */,
 			);
 			name = "Support Files";
 			path = "../Target Support Files/Sage";
 			sourceTree = "<group>";
 		};
+		7BE5EA84C8584B96699B0E90BCF74844 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				12834E296C553DF25607F41CDB6CAA67 /* Sage */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		7DB346D0F39D3F0E887471402A8071AB = {
+			isa = PBXGroup;
+			children = (
+				93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */,
+				BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */,
+				7BE5EA84C8584B96699B0E90BCF74844 /* Pods */,
+				FCDC7DD8F481F3C447AE16F8CCAB7F8E /* Products */,
+				ED5892DA2029F07F6C7211D740BE03C1 /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
 		BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				BF6342C8B29F4CEEA088EFF7AB4DE362 /* iOS */,
+				3DCAB2B7CDE207B3958B6CB957FCC758 /* iOS */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		BF6342C8B29F4CEEA088EFF7AB4DE362 /* iOS */ = {
-			isa = PBXGroup;
-			children = (
-				3E4E89230EF59BC255123B67864ACF77 /* Foundation.framework */,
-			);
-			name = iOS;
-			sourceTree = "<group>";
-		};
-		BFE4E7A73B14D94D98225EEC793964F9 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				6E76546D78B3C2051DA34876F6AA39C8 /* Sage */,
-			);
-			name = Pods;
 			sourceTree = "<group>";
 		};
 		ED5892DA2029F07F6C7211D740BE03C1 /* Targets Support Files */ = {
@@ -199,53 +196,62 @@
 			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
+		FCDC7DD8F481F3C447AE16F8CCAB7F8E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1868ACECB7C9110FBCE726914D73B785 /* Pods_SwiftChessEngine.framework */,
+				9EA84E6BE14B1E580D852F075145C93E /* Sage.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		2E38F520C84CC903A5EF23B50F1FCE43 /* Headers */ = {
+		4A146F1CF99C9970B2899DBD2CCD0155 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				05F3A244F95306B92856ADA9BCA84532 /* Pods-SwiftChessEngine-umbrella.h in Headers */,
+				929343DD42DE7F6E692171F6FBF4F40D /* Sage-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C80990C595237DD903E75EC46C6309B1 /* Headers */ = {
+		7B2E1A2AC75544FE4FD0B280BAD97900 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1A21501A3AB47097D4608F6FBDB5FC25 /* Sage-umbrella.h in Headers */,
+				562131C98098CD0826E4E5F159AFF3DF /* Pods-SwiftChessEngine-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		0925CE8E5310D74D72F6E0D64EB176C5 /* Pods-SwiftChessEngine */ = {
+		C7A03F0B962ACC7E028441A557BE1D1D /* Pods-SwiftChessEngine */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 46CAF302E5D85191F89524BCD09F3F69 /* Build configuration list for PBXNativeTarget "Pods-SwiftChessEngine" */;
+			buildConfigurationList = 9A3DFF7E597BD90322E9355F3D6B4F84 /* Build configuration list for PBXNativeTarget "Pods-SwiftChessEngine" */;
 			buildPhases = (
-				BDBF4C0F1AB42B821FDCD971B6AC132F /* Sources */,
-				118A2AB8951908FC4552164D990DAA74 /* Frameworks */,
-				2E38F520C84CC903A5EF23B50F1FCE43 /* Headers */,
+				7ED9024C9B83CB5AD82D2CC0D881A0F7 /* Sources */,
+				41327B2E8696A32B50C0119BF3683A69 /* Frameworks */,
+				7B2E1A2AC75544FE4FD0B280BAD97900 /* Headers */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				3D54DE67F921866F41B4A4F0D534A446 /* PBXTargetDependency */,
+				A4DCE0C928EF15C67AF8319FE6314BB7 /* PBXTargetDependency */,
 			);
 			name = "Pods-SwiftChessEngine";
 			productName = "Pods-SwiftChessEngine";
-			productReference = 99B4F9AEEFC8B8A9C0EDD5B653985A11 /* Pods_SwiftChessEngine.framework */;
+			productReference = 1868ACECB7C9110FBCE726914D73B785 /* Pods_SwiftChessEngine.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		95F8CA8BFD072EECF19CA1FF5BC5CE2A /* Sage */ = {
+		CF5459EF9BFDF3B4F2D419EF54DA0910 /* Sage */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A14B4FA9263113213B9CD867A3ADB587 /* Build configuration list for PBXNativeTarget "Sage" */;
+			buildConfigurationList = 50097A6CBB1556514F2A582DBE0FE18F /* Build configuration list for PBXNativeTarget "Sage" */;
 			buildPhases = (
-				C759E5487DBFC31422C902BB83993A50 /* Sources */,
-				F325D8788232A8DA31B283F6EA3D4869 /* Frameworks */,
-				C80990C595237DD903E75EC46C6309B1 /* Headers */,
+				F529DC67AE04720F36E380EDEBD3E727 /* Sources */,
+				E5CFCA2C4147972D1A3C74FA609BAE63 /* Frameworks */,
+				4A146F1CF99C9970B2899DBD2CCD0155 /* Headers */,
 			);
 			buildRules = (
 			);
@@ -253,7 +259,7 @@
 			);
 			name = Sage;
 			productName = Sage;
-			productReference = 128F3B0E8A73AF0B846ED3B29FD76CF8 /* Sage.framework */;
+			productReference = 9EA84E6BE14B1E580D852F075145C93E /* Sage.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -262,7 +268,7 @@
 		D41D8CD98F00B204E9800998ECF8427E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0700;
+				LastSwiftUpdateCheck = 0730;
 				LastUpgradeCheck = 0700;
 			};
 			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
@@ -273,62 +279,96 @@
 				en,
 			);
 			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
-			productRefGroup = 8C3954AB5F7D56AF3FDF0D3B033F7992 /* Products */;
+			productRefGroup = FCDC7DD8F481F3C447AE16F8CCAB7F8E /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				0925CE8E5310D74D72F6E0D64EB176C5 /* Pods-SwiftChessEngine */,
-				95F8CA8BFD072EECF19CA1FF5BC5CE2A /* Sage */,
+				C7A03F0B962ACC7E028441A557BE1D1D /* Pods-SwiftChessEngine */,
+				CF5459EF9BFDF3B4F2D419EF54DA0910 /* Sage */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		BDBF4C0F1AB42B821FDCD971B6AC132F /* Sources */ = {
+		7ED9024C9B83CB5AD82D2CC0D881A0F7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				82869D46C6010CF609D582E4D4DF9986 /* Pods-SwiftChessEngine-dummy.m in Sources */,
+				57A638D36D881A7ADA9DF0AF82B429B9 /* Pods-SwiftChessEngine-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C759E5487DBFC31422C902BB83993A50 /* Sources */ = {
+		F529DC67AE04720F36E380EDEBD3E727 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				67A3C1F3D24EE54F355E167FCF728163 /* Bitboard.swift in Sources */,
-				C05AEDA27A98DA411D601E15B5D59417 /* Board.swift in Sources */,
-				6DBB6C498CEF9C07316D34ACF2B08959 /* CastlingRights.swift in Sources */,
-				FB86A15B235143A3F90D5CA5F3212819 /* Color.swift in Sources */,
-				592BE427E8F7E86944EEA945890087BF /* File.swift in Sources */,
-				F30C933CFF97579D2C71A3ED265495EF /* Game.swift in Sources */,
-				2DEC0E2FE10E616A34BC593B5D98766B /* InternalTypes.swift in Sources */,
-				A967931E408227919FB18F4021C6780E /* Move.swift in Sources */,
-				6CEA600C5EBFB9818750FB0561614715 /* Piece.swift in Sources */,
-				53C8BA6D1C5342C29ED3205C6D40DDEB /* Rank.swift in Sources */,
-				4C95782F94DB85B450AD301A8EB5BE30 /* Sage-dummy.m in Sources */,
-				C2C6AA19C5162CD7333B199D21354554 /* Sequence+Sage.swift in Sources */,
-				7B80A5E00C43841E21E98BA1B819245D /* Square.swift in Sources */,
-				BFB572CD43A51D49638DA267D38C2689 /* Variant.swift in Sources */,
+				D01AA92852577E83789474EA376C6C9F /* Bitboard.swift in Sources */,
+				21E5A65F1FC28553DDCB594A8C6B821C /* Board.swift in Sources */,
+				AA2C00737467B520D7CC630899D223D8 /* CastlingRights.swift in Sources */,
+				909D45EE52FE4E9AE38D715D9FEFBBBE /* Color.swift in Sources */,
+				AE578EB6E8F8598A66D144AE21D33D0C /* File.swift in Sources */,
+				C1F506F532F596056F164769DD945779 /* Game.swift in Sources */,
+				9D59DD23FE7F44B4F5919C7513FF79A2 /* InternalTypes.swift in Sources */,
+				5560ADD84783DBBA475F141BFE5BDBB4 /* Move.swift in Sources */,
+				4ED46CEFA310F3C9B329642B437D026E /* PGN.swift in Sources */,
+				2986A186FFE767E8D34CA0FB949B20D7 /* Piece.swift in Sources */,
+				67E6E257ABFD6332A19CC237C02779C8 /* Player.swift in Sources */,
+				43B2B3D488510A6AD4EFB447E44FEE95 /* Rank.swift in Sources */,
+				03C95F68B9DB752B52660EBFC7D75909 /* Sage-dummy.m in Sources */,
+				91E3D8FE707A828BA7FDA568A9C4DAC2 /* Sequence+Sage.swift in Sources */,
+				E4FEAA5279D57B2177A3B8CA1D8AAB2F /* Square.swift in Sources */,
+				8D3F59434B4C43037531E2EA029F2659 /* Variant.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		3D54DE67F921866F41B4A4F0D534A446 /* PBXTargetDependency */ = {
+		A4DCE0C928EF15C67AF8319FE6314BB7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = Sage;
-			target = 95F8CA8BFD072EECF19CA1FF5BC5CE2A /* Sage */;
-			targetProxy = 7C2521EC15A1069CFD12666710D19BA2 /* PBXContainerItemProxy */;
+			target = CF5459EF9BFDF3B4F2D419EF54DA0910 /* Sage */;
+			targetProxy = 26BADB75670613473C346C7F2A50149D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		3A18F986FACEFE98A4D9B857837C01F3 /* Debug */ = {
+		0AADE1F2903EDB2C4F4FD3E3B1C001C2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B417455E2A19CBE122CFFB13A9740460 /* Sage.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Sage/Sage-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/Sage/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/Sage/Sage.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = Sage;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		12914D756594D15C6F2CA12FE5F89F1B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -342,11 +382,14 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_REQUIRED = NO;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_DEBUG=1",
 					"DEBUG=1",
 					"$(inherited)",
 				);
@@ -359,81 +402,56 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE_SPECIFIER = NO_SIGNING/;
 				STRIP_INSTALLED_PRODUCT = NO;
 				SYMROOT = "${SRCROOT}/../build";
 			};
 			name = Debug;
 		};
-		557E51F4C53AE299A978A50DDBFCFB23 /* Release */ = {
+		394899882F16A1F83CD898AAD753779B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 187F9FBD37F7CD48CA7550F456C44EE3 /* Sage.xcconfig */;
+			baseConfigurationReference = B417455E2A19CBE122CFFB13A9740460 /* Sage.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREFIX_HEADER = "Target Support Files/Sage/Sage-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/Sage/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = "Target Support Files/Sage/Sage.modulemap";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = Sage;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
 		};
-		7353CB43BFD3FA7802A01695A03C0593 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 722E3FC5290EC68C32405FD653838141 /* Pods-SwiftChessEngine.debug.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				INFOPLIST_FILE = "Target Support Files/Pods-SwiftChessEngine/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-SwiftChessEngine/Pods-SwiftChessEngine.modulemap";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_NAME = Pods_SwiftChessEngine;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		AA1DB171A77E66208CB8C6D1DBDB3BF7 /* Release */ = {
+		808225F393631B242F0DE8E374B23D35 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 89F759ACCA649810AF609B5071E09B0D /* Pods-SwiftChessEngine.release.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "Target Support Files/Pods-SwiftChessEngine/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -444,6 +462,7 @@
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = Pods_SwiftChessEngine;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -453,25 +472,32 @@
 			};
 			name = Release;
 		};
-		C7283C28AB37EDC516930C1D403F8C22 /* Debug */ = {
+		E158F28D001FCBE06869BF5FD9C6452C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 187F9FBD37F7CD48CA7550F456C44EE3 /* Sage.xcconfig */;
+			baseConfigurationReference = 722E3FC5290EC68C32405FD653838141 /* Pods-SwiftChessEngine.debug.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/Sage/Sage-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/Sage/Info.plist";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-SwiftChessEngine/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/Sage/Sage.modulemap";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-SwiftChessEngine/Pods-SwiftChessEngine.modulemap";
 				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_NAME = Sage;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_SwiftChessEngine;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -481,10 +507,11 @@
 			};
 			name = Debug;
 		};
-		F48B798243BDAB85AD3DD293733E2A22 /* Release */ = {
+		E72E7977875C2D251FC62736BBDDC389 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -498,10 +525,14 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_REQUIRED = NO;
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_PREPROCESSOR_DEFINITIONS = "RELEASE=1";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_RELEASE=1",
+					"$(inherited)",
+				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -509,6 +540,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				PROVISIONING_PROFILE_SPECIFIER = NO_SIGNING/;
 				STRIP_INSTALLED_PRODUCT = NO;
 				SYMROOT = "${SRCROOT}/../build";
 				VALIDATE_PRODUCT = YES;
@@ -521,26 +553,26 @@
 		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				3A18F986FACEFE98A4D9B857837C01F3 /* Debug */,
-				F48B798243BDAB85AD3DD293733E2A22 /* Release */,
+				12914D756594D15C6F2CA12FE5F89F1B /* Debug */,
+				E72E7977875C2D251FC62736BBDDC389 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		46CAF302E5D85191F89524BCD09F3F69 /* Build configuration list for PBXNativeTarget "Pods-SwiftChessEngine" */ = {
+		50097A6CBB1556514F2A582DBE0FE18F /* Build configuration list for PBXNativeTarget "Sage" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				7353CB43BFD3FA7802A01695A03C0593 /* Debug */,
-				AA1DB171A77E66208CB8C6D1DBDB3BF7 /* Release */,
+				0AADE1F2903EDB2C4F4FD3E3B1C001C2 /* Debug */,
+				394899882F16A1F83CD898AAD753779B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A14B4FA9263113213B9CD867A3ADB587 /* Build configuration list for PBXNativeTarget "Sage" */ = {
+		9A3DFF7E597BD90322E9355F3D6B4F84 /* Build configuration list for PBXNativeTarget "Pods-SwiftChessEngine" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				C7283C28AB37EDC516930C1D403F8C22 /* Debug */,
-				557E51F4C53AE299A978A50DDBFCFB23 /* Release */,
+				E158F28D001FCBE06869BF5FD9C6452C /* Debug */,
+				808225F393631B242F0DE8E374B23D35 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

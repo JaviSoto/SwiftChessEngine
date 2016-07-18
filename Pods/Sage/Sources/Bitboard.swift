@@ -18,22 +18,37 @@
 //
 
 /// A lookup table of least significant bit indices.
-private let _lsbTable: ContiguousArray<Int> = [00, 01, 48, 02, 57, 49, 28, 03, 61, 58, 50,
-                                               42, 38, 29, 17, 04, 62, 55, 59, 36, 53, 51,
-                                               43, 22, 45, 39, 33, 30, 24, 18, 12, 05, 63,
-                                               47, 56, 27, 60, 41, 37, 16, 54, 35, 52, 21,
-                                               44, 32, 23, 11, 46, 26, 40, 15, 34, 20, 31,
-                                               10, 25, 14, 19, 09, 13, 08, 07, 06]
+private let _lsbTable: ContiguousArray<Int> = [00, 01, 48, 02, 57, 49, 28, 03,
+                                               61, 58, 50, 42, 38, 29, 17, 04,
+                                               62, 55, 59, 36, 53, 51, 43, 22,
+                                               45, 39, 33, 30, 24, 18, 12, 05,
+                                               63, 47, 56, 27, 60, 41, 37, 16,
+                                               54, 35, 52, 21, 44, 32, 23, 11,
+                                               46, 26, 40, 15, 34, 20, 31, 10,
+                                               25, 14, 19, 09, 13, 08, 07, 06]
+
+/// A lookup table of most significant bit indices.
+private let _msbTable: ContiguousArray<Int> = [00, 47, 01, 56, 48, 27, 02, 60,
+                                               57, 49, 41, 37, 28, 16, 03, 61,
+                                               54, 58, 35, 52, 50, 42, 21, 44,
+                                               38, 32, 29, 23, 17, 11, 04, 62,
+                                               46, 55, 26, 59, 40, 36, 15, 53,
+                                               34, 51, 20, 43, 31, 22, 10, 45,
+                                               25, 39, 14, 33, 19, 30, 09, 24,
+                                               13, 18, 08, 12, 07, 06, 05, 63]
 
 /// A lookup table of bitboards for all squares.
 private let _bitboardTable = ContiguousArray((0 ..< 64).map { Bitboard(rawValue: 1 << $0) })
+
+/// The De Bruijn multiplier.
+private let _debruijn64: UInt64 = 0x03f79d71b4cb0a89
 
 /// Returns the index of the lsb value.
 private func _index(lsb value: Bitboard) -> Int? {
     guard value != 0 else {
         return nil
     }
-    return _lsbTable[Int((value.rawValue &* 0x03f79d71b4cb0a89) >> 58)]
+    return _lsbTable[Int((value.rawValue &* _debruijn64) >> 58)]
 }
 
 /// Returns the pawn attack table for `color`.
@@ -338,6 +353,35 @@ public struct Bitboard: RawRepresentable, Hashable, CustomStringConvertible {
         return lsbIndex.flatMap({ Square(rawValue: $0) })
     }
 
+    private var _msbShifted: UInt64 {
+        var x = rawValue
+        x |= x >> 1
+        x |= x >> 2
+        x |= x >> 4
+        x |= x >> 8
+        x |= x >> 16
+        x |= x >> 32
+        return x
+    }
+
+    /// The most significant bit.
+    public var msb: Bitboard {
+        return Bitboard(rawValue: (_msbShifted >> 1) + 1)
+    }
+
+    /// The index for the most significant bit of `self`.
+    public var msbIndex: Int? {
+        guard rawValue != 0 else {
+            return nil
+        }
+        return _msbTable[Int((_msbShifted &* _debruijn64) >> 58)]
+    }
+
+    /// The square for the most significant bit of `self`.
+    public var msbSquare: Square? {
+        return msbIndex.flatMap({ Square(rawValue: $0) })
+    }
+
     /// Convert from a raw value of `UInt64`.
     public init(rawValue: UInt64) {
         self.rawValue = rawValue
@@ -473,13 +517,11 @@ public struct Bitboard: RawRepresentable, Hashable, CustomStringConvertible {
     }
 
     /// Returns the pawn pushes available for `color` in `self`.
-    @warn_unused_result
     internal func _pawnPushes(for color: Color, empty: Bitboard) -> Bitboard {
         return (color.isWhite ? shifted(toward: ._north) : shifted(toward: ._south)) & empty
     }
 
     /// Returns the attacks available to the pawns for `color` in `self`.
-    @warn_unused_result
     internal func _pawnAttacks(for color: Color) -> Bitboard {
         if color.isWhite {
             return shifted(toward: ._northeast) | shifted(toward: ._northwest)
@@ -489,7 +531,6 @@ public struct Bitboard: RawRepresentable, Hashable, CustomStringConvertible {
     }
 
     /// Returns the attacks available to the knight in `self`.
-    @warn_unused_result
     internal func _knightAttacks() -> Bitboard {
         let x = self
         return (((x << 17) | (x >> 15)) & _notFileA)
@@ -499,7 +540,6 @@ public struct Bitboard: RawRepresentable, Hashable, CustomStringConvertible {
     }
 
     /// Returns the attacks available to the bishop in `self`.
-    @warn_unused_result
     internal func _bishopAttacks(stoppers bitboard: Bitboard = 0) -> Bitboard {
         return filled(toward: ._northeast, stoppers: bitboard).shifted(toward: ._northeast)
             |  filled(toward: ._northwest, stoppers: bitboard).shifted(toward: ._northwest)
@@ -508,7 +548,6 @@ public struct Bitboard: RawRepresentable, Hashable, CustomStringConvertible {
     }
 
     /// Returns the attacks available to the rook in `self`.
-    @warn_unused_result
     internal func _rookAttacks(stoppers bitboard: Bitboard = 0) -> Bitboard {
         return filled(toward: ._north, stoppers: bitboard).shifted(toward: ._north)
             |  filled(toward: ._south, stoppers: bitboard).shifted(toward: ._south)
@@ -517,13 +556,11 @@ public struct Bitboard: RawRepresentable, Hashable, CustomStringConvertible {
     }
 
     /// Returns the attacks available to the queen in `self`.
-    @warn_unused_result
     internal func _queenAttacks(stoppers bitboard: Bitboard = 0) -> Bitboard {
         return _rookAttacks(stoppers: bitboard) | _bishopAttacks(stoppers: bitboard)
     }
 
     /// Returns the attacks available to the king in `self`.
-    @warn_unused_result
     internal func _kingAttacks() -> Bitboard {
         let attacks = shifted(toward: ._east) | shifted(toward: ._west)
         let bitboard = self | attacks
@@ -568,14 +605,12 @@ public struct Bitboard: RawRepresentable, Hashable, CustomStringConvertible {
     }
 
     /// Returns `true` if `self` intersects `other`.
-    @warn_unused_result
     public func intersects(_ other: Bitboard) -> Bool {
         return rawValue & other.rawValue != 0
     }
 
     /// Returns `self` flipped horizontally.
-    @warn_unused_result
-    private func _flippedHorizontally() -> Bitboard {
+    public func flippedHorizontally() -> Bitboard {
         let x = 0x5555555555555555 as Bitboard
         let y = 0x3333333333333333 as Bitboard
         let z = 0x0F0F0F0F0F0F0F0F as Bitboard
@@ -587,8 +622,7 @@ public struct Bitboard: RawRepresentable, Hashable, CustomStringConvertible {
     }
 
     /// Returns `self` flipped vertically.
-    @warn_unused_result
-    private func _flippedVertically() -> Bitboard {
+    public func flippedVertically() -> Bitboard {
         let x = 0x00FF00FF00FF00FF as Bitboard
         let y = 0x0000FFFF0000FFFF as Bitboard
         var n = self
@@ -599,8 +633,7 @@ public struct Bitboard: RawRepresentable, Hashable, CustomStringConvertible {
     }
 
     /// Returns the bits of `self` filled toward `direction` stopped by `stoppers`.
-    @warn_unused_result
-    private func _filled(toward direction: ShiftDirection, stoppers: Bitboard) -> Bitboard {
+    public func filled(toward direction: ShiftDirection, stoppers: Bitboard) -> Bitboard {
         let empty = ~stoppers
         var bitboard = self
         for _ in 0 ..< 7 {
@@ -611,20 +644,7 @@ public struct Bitboard: RawRepresentable, Hashable, CustomStringConvertible {
 
     #if swift(>=3)
 
-    /// Returns `self` flipped horizontally.
-    @warn_unused_result(mutable_variant:"flipHorizontally")
-    public func flippedHorizontally() -> Bitboard {
-        return _flippedHorizontally()
-    }
-
-    /// Returns `self` flipped vertically.
-    @warn_unused_result(mutable_variant:"flipVertically")
-    public func flippedVertically() -> Bitboard {
-        return _flippedVertically()
-    }
-
     /// Returns the bits of `self` shifted once toward `direction`.
-    @warn_unused_result(mutable_variant:"shift")
     public func shifted(toward direction: ShiftDirection) -> Bitboard {
         switch direction {
         case .north:     return  self << 8
@@ -638,26 +658,7 @@ public struct Bitboard: RawRepresentable, Hashable, CustomStringConvertible {
         }
     }
 
-    /// Returns the bits of `self` filled toward `direction` stopped by `stoppers`.
-    @warn_unused_result(mutable_variant:"fill")
-    public func filled(toward direction: ShiftDirection, stoppers: Bitboard = 0) -> Bitboard {
-        return _filled(toward: direction, stoppers: stoppers)
-    }
-
     #else
-
-    /// Returns `self` flipped horizontally.
-    @warn_unused_result(mutable_variant="flipHorizontally")
-    public func flippedHorizontally() -> Bitboard {
-        return _flippedHorizontally()
-    }
-
-    /// Returns `self` flipped vertically.
-    @warn_unused_result(mutable_variant="flipVertically")
-    public func flippedVertically() -> Bitboard {
-        return _flippedVertically()
-    }
-
 
     /// Returns the bits of `self` shifted once toward `direction`.
     @warn_unused_result(mutable_variant="shift")
@@ -672,12 +673,6 @@ public struct Bitboard: RawRepresentable, Hashable, CustomStringConvertible {
         case .Southwest: return (self >> 9) & _notFileH
         case .Northwest: return (self << 7) & _notFileH
         }
-    }
-
-    /// Returns the bits of `self` filled toward `direction` stopped by `stoppers`.
-    @warn_unused_result(mutable_variant="fill")
-    public func filled(toward direction: ShiftDirection, stoppers: Bitboard = 0) -> Bitboard {
-        return _filled(toward: direction, stoppers: stoppers)
     }
 
     #endif
@@ -724,8 +719,27 @@ public struct Bitboard: RawRepresentable, Hashable, CustomStringConvertible {
         return popLSBIndex().flatMap({ Square(rawValue: $0) })
     }
 
+    /// Removes the most significant bit and returns it.
+    public mutating func popMSB() -> Bitboard {
+        let msb = self.msb
+        rawValue -= msb.rawValue
+        return msb
+    }
+
+    /// Removes the most significant bit and returns its index, if any.
+    public mutating func popMSBIndex() -> Int? {
+        guard rawValue != 0 else { return nil }
+        let shifted = _msbShifted
+        rawValue -= (shifted >> 1) + 1
+        return _msbTable[Int((shifted &* _debruijn64) >> 58)]
+    }
+
+    /// Removes the most significant bit and returns its square, if any.
+    public mutating func popMSBSquare() -> Square? {
+        return popMSBIndex().flatMap({ Square(rawValue: $0) })
+    }
+
     /// Returns the ranks of `self` as eight 8-bit integers.
-    @warn_unused_result
     public func ranks() -> [UInt8] {
         return (0 ..< 8).map { UInt8((rawValue >> ($0 * 8)) & 255) }
     }
@@ -784,7 +798,6 @@ extension Bitboard: IntegerLiteralConvertible {
 /// Returns the intersection of bits set in `lhs` and `rhs`.
 ///
 /// - complexity: O(1).
-@warn_unused_result
 public func & (lhs: Bitboard, rhs: Bitboard) -> Bitboard {
     return Bitboard(rawValue: lhs.rawValue & rhs.rawValue)
 }
@@ -792,7 +805,6 @@ public func & (lhs: Bitboard, rhs: Bitboard) -> Bitboard {
 /// Returns the union of bits set in `lhs` and `rhs`.
 ///
 /// - complexity: O(1).
-@warn_unused_result
 public func | (lhs: Bitboard, rhs: Bitboard) -> Bitboard {
     return Bitboard(rawValue: lhs.rawValue | rhs.rawValue)
 }
@@ -800,7 +812,6 @@ public func | (lhs: Bitboard, rhs: Bitboard) -> Bitboard {
 /// Returns the bits that are set in exactly one of `lhs` and `rhs`.
 ///
 /// - complexity: O(1).
-@warn_unused_result
 public func ^ (lhs: Bitboard, rhs: Bitboard) -> Bitboard {
     return Bitboard(rawValue: lhs.rawValue ^ rhs.rawValue)
 }
@@ -808,19 +819,16 @@ public func ^ (lhs: Bitboard, rhs: Bitboard) -> Bitboard {
 /// Returns `x ^ ~Self.allZeros`.
 ///
 /// - complexity: O(1).
-@warn_unused_result
 public prefix func ~ (x: Bitboard) -> Bitboard {
     return Bitboard(rawValue: ~x.rawValue)
 }
 
 /// Returns the bits of `lhs` shifted right by `rhs`.
-@warn_unused_result
 public func >> (lhs: Bitboard, rhs: Bitboard) -> Bitboard {
     return Bitboard(rawValue: lhs.rawValue >> rhs.rawValue)
 }
 
 /// Returns the bits of `lhs` shifted left by `rhs`.
-@warn_unused_result
 public func << (lhs: Bitboard, rhs: Bitboard) -> Bitboard {
     return Bitboard(rawValue: lhs.rawValue << rhs.rawValue)
 }

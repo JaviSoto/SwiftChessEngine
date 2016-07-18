@@ -226,7 +226,7 @@ final class ChessEngine {
         let movesAnalized: Int
     }
 
-    let game = Game(mode: .computerVsComputer, variant: .standard)
+    let game = Game(whitePlayer: Player(kind: .computer), blackPlayer: Player(kind: .computer), variant: Variant.standard)
 
     init() {
 

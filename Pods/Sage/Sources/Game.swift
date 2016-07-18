@@ -20,35 +20,6 @@
 /// A chess game.
 public final class Game {
 
-    /// A chess game mode.
-    public enum Mode {
-
-        #if swift(>=3)
-
-        /// A game between two humans.
-        case humanVsHuman
-
-        /// A game between a human and a computer.
-        case humanVsComputer
-
-        /// A game between two computers.
-        case computerVsComputer
-
-        #else
-
-        /// A game between two humans.
-        case HumanVsHuman
-
-        /// A game between a human and a computer.
-        case HumanVsComputer
-
-        /// A game between two computers.
-        case ComputerVsComputer
-
-        #endif
-
-    }
-
     /// A chess game outcome.
     public enum Outcome: Hashable, CustomStringConvertible {
 
@@ -123,9 +94,14 @@ public final class Game {
             return !isWin
         }
 
-        /// Create an outcome from `string`.
+        /// Create an outcome from `string`. Ignores whitespace.
         public init?(_ string: String) {
-            switch string {
+            #if swift(>=3)
+                let stripped = string.characters.split(separator: " ").map(String.init).joined(separator: "")
+            #else
+                let stripped = string.characters.split(" ").map(String.init).joinWithSeparator("")
+            #endif
+            switch stripped {
             case "1-0":
                 self = ._win(._white)
             case "0-1":
@@ -138,8 +114,8 @@ public final class Game {
         }
 
         /// The point value for a player. Can be 1 for win, 0.5 for draw, or 0 for loss.
-        public func valueFor(player color: Color) -> Double {
-            return winColor.map({ $0 == color ? 1 : 0 }) ?? 0.5
+        public func value(for playerColor: Color) -> Double {
+            return winColor.map({ $0 == playerColor ? 1 : 0 }) ?? 0.5
         }
 
     }
@@ -228,7 +204,6 @@ public final class Game {
         ///
         /// - seealso: [FEN (Wikipedia)](https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation),
         ///            [FEN (Chess Programming Wiki)](https://chessprogramming.wikispaces.com/Forsyth-Edwards+Notation)
-        @warn_unused_result
         public func fen() -> String {
             #if swift(>=3)
                 let transform = { "\($0 as Square)".lowercased() }
@@ -243,14 +218,71 @@ public final class Game {
 
     }
 
+    #if swift(>=3)
+
+    /// An error in move execution.
+    ///
+    /// Thrown by the `execute(move:promotion:)` method for a `Game` instance.
+    public enum ExecutionError: ErrorProtocol {
+
+        /// Attempted illegal move.
+        case illegalMove(Move, Color, Board)
+
+        /// Could not promote with a piece kind.
+        case invalidPromotion(Piece.Kind)
+
+        /// The error message.
+        public var message: String {
+            switch self {
+            case let .illegalMove(move, color, board):
+                return "Illegal move: \(move) for \(color) on \(board)"
+            case let .invalidPromotion(pieceKind):
+                return "Invalid promoton: \(pieceKind)"
+            }
+        }
+
+    }
+
+    #else
+
+    /// An error in move execution.
+    ///
+    /// Thrown by the `execute(move:promotion:)` method for a `Game` instance.
+    public enum ExecutionError: ErrorType {
+
+        /// Attempted illegal move.
+        case IllegalMove(Move, Color, Board)
+
+        /// Could not promote with a piece kind.
+        case InvalidPromotion(Piece.Kind)
+
+        /// The error message.
+        public var message: String {
+            switch self {
+            case let .IllegalMove(move, color, board):
+                return "Illegal move: \(move) for \(color) on \(board)"
+            case let .InvalidPromotion(pieceKind):
+                return "Invalid promoton: \(pieceKind)"
+            }
+        }
+
+    }
+
+    #endif
+
     /// A player turn.
     public typealias PlayerTurn = Color
 
     /// All of the conducted moves in the game.
-    private var _moveHistory: [(move: Move, piece: Piece, capture: Piece?, kingAttackers: Bitboard, halfmoves: UInt, rights: CastlingRights)]
+    private var _moveHistory: [(move: Move,
+                                piece: Piece,
+                                capture: Piece?,
+                                kingAttackers: Bitboard,
+                                halfmoves: UInt,
+                                rights: CastlingRights)]
 
     /// All of the undone moves in the game.
-    private var _undoHistory: [(move: Move, promotion: Piece?, kingAttackers: Bitboard)]
+    private var _undoHistory: [(move: Move, promotion: Piece.Kind?, kingAttackers: Bitboard)]
 
     /// The game's board.
     public private(set) var board: Board
@@ -261,8 +293,11 @@ public final class Game {
     /// The castling rights.
     public private(set) var castlingRights: CastlingRights
 
-    /// The game's mode.
-    public var mode: Mode
+    /// The white player.
+    public var whitePlayer: Player
+
+    /// The black player.
+    public var blackPlayer: Player
 
     /// The game's variant.
     public let variant: Variant
@@ -343,54 +378,41 @@ public final class Game {
         self.board           = game.board
         self.playerTurn      = game.playerTurn
         self.castlingRights  = game.castlingRights
-        self.mode            = game.mode
+        self.whitePlayer     = game.whitePlayer
+        self.blackPlayer     = game.blackPlayer
         self.variant         = game.variant
         self.attackersToKing = game.attackersToKing
         self.halfmoves       = game.halfmoves
     }
 
-    #if swift(>=3)
     /// Creates a new chess game.
     ///
-    /// - parameter mode: The game's mode. Default is `humanVsHuman`.
-    public init(mode: Mode = .humanVsHuman, variant: Variant = .standard) {
+    /// - parameter whitePlayer: The game's white player. Default is a nameless human.
+    /// - parameter blackPlayer: The game's black player. Default is a nameless human.
+    /// - parameter variant: The game's chess variant. Default is standard.
+    public init(whitePlayer: Player = Player(),
+                blackPlayer: Player = Player(),
+                variant: Variant = ._standard) {
         self._moveHistory = []
         self._undoHistory = []
         self.board = Board(variant: variant)
-        self.playerTurn = .white
+        self.playerTurn = ._white
         self.castlingRights = .all
-        self.mode = mode
+        self.whitePlayer = whitePlayer
+        self.blackPlayer = blackPlayer
         self.variant = variant
         self.attackersToKing = 0
         self.halfmoves = 0
     }
-    #else
-    /// Creates a new chess game.
-    ///
-    /// - parameter mode: The game's mode. Default is `HumanVsHuman`.
-    public init(mode: Mode = .HumanVsHuman, variant: Variant = .Standard) {
-        self._moveHistory = []
-        self._undoHistory = []
-        self.board = Board(variant: variant)
-        self.playerTurn = .White
-        self.castlingRights = .all
-        self.mode = mode
-        self.variant = variant
-        self.attackersToKing = 0
-        self.halfmoves = 0
-    }
-    #endif
 
     /// Returns a copy of `self`.
     ///
     /// - complexity: O(1).
-    @warn_unused_result
     public func copy() -> Game {
         return Game(game: self)
     }
 
     /// Returns the captured pieces for a color, or for all if color is `nil`.
-    @warn_unused_result
     public func capturedPieces(for color: Color? = nil) -> [Piece] {
         let pieces = _moveHistory.flatMap({ $0.capture })
         if let color = color {
@@ -401,7 +423,6 @@ public final class Game {
     }
 
     /// Returns the moves bitboard currently available for the piece at `square`, if any.
-    @warn_unused_result
     private func _movesBitboardForPiece(at square: Square, considerHalfmoves: Bool) -> Bitboard {
         if considerHalfmoves && halfmoves >= 100 {
             return 0
@@ -453,49 +474,43 @@ public final class Game {
                 movesBitboard[moveSquare] = false
             }
             undoMove()
+            _undoHistory.removeLast()
         }
 
         return movesBitboard
     }
 
     /// Returns the moves currently available for the piece at `square`, if any.
-    @warn_unused_result
     private func _movesForPiece(at square: Square, considerHalfmoves flag: Bool) -> [Move] {
         return _movesBitboardForPiece(at: square, considerHalfmoves: flag).moves(from: square)
     }
 
     /// Returns the available moves for the current player.
-    @warn_unused_result
     private func _availableMoves(considerHalfmoves flag: Bool) -> [Move] {
         return Array(Square.all.map({ _movesForPiece(at: $0, considerHalfmoves: flag) }).flatten())
     }
 
     /// Returns the available moves for the current player.
-    @warn_unused_result
     public func availableMoves() -> [Move] {
         return _availableMoves(considerHalfmoves: true)
     }
 
     /// Returns the moves bitboard currently available for the piece at `square`.
-    @warn_unused_result
     public func movesBitboardForPiece(at square: Square) -> Bitboard {
         return _movesBitboardForPiece(at: square, considerHalfmoves: true)
     }
 
     /// Returns the moves bitboard currently available for the piece at `location`.
-    @warn_unused_result
     public func movesBitboardForPiece(at location: Location) -> Bitboard {
         return movesBitboardForPiece(at: Square(location: location))
     }
 
     /// Returns the moves currently available for the piece at `square`.
-    @warn_unused_result
     public func movesForPiece(at square: Square) -> [Move] {
         return _movesForPiece(at: square, considerHalfmoves: true)
     }
 
     /// Returns the moves currently available for the piece at `location`.
-    @warn_unused_result
     public func movesForPiece(at location: Location) -> [Move] {
         return movesForPiece(at: Square(location: location))
     }
@@ -503,14 +518,13 @@ public final class Game {
     #if swift(>=3)
 
     /// Returns `true` if the move is legal.
-    @warn_unused_result
     public func isLegal(move: Move) -> Bool {
         let moves = movesBitboardForPiece(at: move.start)
         return Bitboard(square: move.end).intersects(moves)
     }
 
     /// Executes a move without checking the legality of the move.
-    private func _execute(_ move: Move, promotion: @noescape () -> Piece) throws {
+    private func _execute(_ move: Move, promotion: @noescape () -> Piece.Kind) throws {
         let piece = board[move.start]!
         var endPiece = piece
         var capture = board[move.end]
@@ -519,10 +533,10 @@ public final class Game {
         if piece.kind.isPawn {
             if move.end.rank == Rank(endFor: playerTurn) {
                 let promotion = promotion()
-                guard promotion.color == playerTurn else {
-                    throw MoveExecutionError.invalidPromotionPiece(promotion)
+                guard promotion.canPromote() else {
+                    throw ExecutionError.invalidPromotion(promotion)
                 }
-                endPiece = promotion
+                endPiece = Piece(kind: promotion, color: playerTurn)
             } else if move.end == enPassantTarget {
                 capture = Piece(pawn: playerTurn.inverse())
                 captureSquare = Square(file: move.end.file, rank: move.start.rank)
@@ -564,14 +578,13 @@ public final class Game {
     #else
 
     /// Returns `true` if the move is legal.
-    @warn_unused_result
     public func isLegal(move move: Move) -> Bool {
         let moves = movesBitboardForPiece(at: move.start)
         return Bitboard(square: move.end).intersects(moves)
     }
 
     /// Executes a move without checking the legality of the move.
-    private func _execute(_ move: Move, @noescape promotion: () -> Piece) throws {
+    private func _execute(_ move: Move, @noescape promotion: () -> Piece.Kind) throws {
         let piece = board[move.start]!
         var endPiece = piece
         var capture = board[move.end]
@@ -580,10 +593,10 @@ public final class Game {
         if piece.kind.isPawn {
             if move.end.rank == Rank(endFor: playerTurn) {
                 let promotion = promotion()
-                guard promotion.color == playerTurn else {
-                    throw MoveExecutionError.InvalidPromotionPiece(promotion)
+                guard promotion.canPromote() else {
+                    throw ExecutionError.InvalidPromotion(promotion)
                 }
-                endPiece = promotion
+                endPiece = Piece(kind: promotion, color: playerTurn)
             } else if move.end == enPassantTarget {
                 capture = Piece(pawn: playerTurn.inverse())
                 captureSquare = Square(file: move.end.file, rank: move.start.rank)
@@ -626,7 +639,7 @@ public final class Game {
 
     /// Executes a move without checking the legality of the move.
     private func _execute(_ move: Move) throws {
-        try _execute(move, promotion: { Piece(queen: playerTurn) })
+        try _execute(move, promotion: { ._queen })
     }
 
     #if swift(>=3)
@@ -634,12 +647,12 @@ public final class Game {
     /// Executes `move`, updating the state for `self`.
     ///
     /// - parameter move: The move to be executed.
-    /// - parameter promotion: A closure returning a promotion piece if a pawn promotion occurs.
+    /// - parameter promotion: A closure returning a promotion piece kind if a pawn promotion occurs.
     ///
-    /// - throws: `MoveExecutionError` if `move` is illegal or if `promotion` is invalid.
-    public func execute(move: Move, promotion: @noescape () -> Piece) throws {
+    /// - throws: `ExecutionError` if `move` is illegal or if `promotion` is invalid.
+    public func execute(move: Move, promotion: @noescape () -> Piece.Kind) throws {
         guard isLegal(move: move) else {
-            throw MoveExecutionError.illegalMove(move, playerTurn, board)
+            throw ExecutionError.illegalMove(move, playerTurn, board)
         }
         try _execute(move, promotion: promotion)
         if kingIsChecked {
@@ -653,10 +666,10 @@ public final class Game {
     /// Executes `move`, updating the state for `self`.
     ///
     /// - parameter move: The move to be executed.
-    /// - parameter promotion: A piece for a pawn promotion.
+    /// - parameter promotion: A piece kind for a pawn promotion.
     ///
-    /// - throws: `MoveExecutionError` if `move` is illegal or if `promotion` is invalid.
-    public func execute(move: Move, promotion: Piece) throws {
+    /// - throws: `ExecutionError` if `move` is illegal or if `promotion` is invalid.
+    public func execute(move: Move, promotion: Piece.Kind) throws {
         try execute(move: move, promotion: { promotion })
     }
 
@@ -664,9 +677,9 @@ public final class Game {
     ///
     /// - parameter move: The move to be executed.
     ///
-    /// - throws: `MoveExecutionError` if `move` is illegal.
+    /// - throws: `ExecutionError` if `move` is illegal.
     public func execute(move: Move) throws {
-        try execute(move: move, promotion: Piece(queen: playerTurn))
+        try execute(move: move, promotion: ._queen)
     }
 
     #else
@@ -674,12 +687,12 @@ public final class Game {
     /// Executes `move`, updating the state for `self`.
     ///
     /// - parameter move: The move to be executed.
-    /// - parameter promotion: A closure returning a promotion piece if a pawn promotion occurs.
+    /// - parameter promotion: A closure returning a promotion piece kind if a pawn promotion occurs.
     ///
-    /// - throws: `MoveExecutionError` if `move` is illegal or if `promotion` is invalid.
-    public func execute(move move: Move, @noescape promotion: () -> Piece) throws {
+    /// - throws: `ExecutionError` if `move` is illegal or if `promotion` is invalid.
+    public func execute(move move: Move, @noescape promotion: () -> Piece.Kind) throws {
         guard isLegal(move: move) else {
-            throw MoveExecutionError.IllegalMove(move, playerTurn, board)
+            throw ExecutionError.IllegalMove(move, playerTurn, board)
         }
         try _execute(move, promotion: promotion)
         if kingIsChecked {
@@ -693,10 +706,10 @@ public final class Game {
     /// Executes `move`, updating the state for `self`.
     ///
     /// - parameter move: The move to be executed.
-    /// - parameter promotion: A piece for a pawn promotion.
+    /// - parameter promotion: A piece kind for a pawn promotion.
     ///
-    /// - throws: `MoveExecutionError` if `move` is illegal or if `promotion` is invalid.
-    public func execute(move move: Move, promotion: Piece) throws {
+    /// - throws: `ExecutionError` if `move` is illegal or if `promotion` is invalid.
+    public func execute(move move: Move, promotion: Piece.Kind) throws {
         try execute(move: move, promotion: { promotion })
     }
 
@@ -704,21 +717,19 @@ public final class Game {
     ///
     /// - parameter move: The move to be executed.
     ///
-    /// - throws: `MoveExecutionError` if `move` is illegal.
+    /// - throws: `ExecutionError` if `move` is illegal.
     public func execute(move move: Move) throws {
-        try execute(move: move, promotion: Piece(queen: playerTurn))
+        try execute(move: move, promotion: ._queen)
     }
 
     #endif
 
     /// Returns the last move on the move stack, if any.
-    @warn_unused_result
     public func moveToUndo() -> Move? {
         return _moveHistory.last?.move
     }
 
     /// Returns the last move on the undo stack, if any.
-    @warn_unused_result
     public func moveToRedo() -> Move? {
         return _undoHistory.last?.move
     }
@@ -729,12 +740,13 @@ public final class Game {
             return nil
         }
         var captureSquare = move.end
-        var promotion: Piece? = nil
+        var promotionKind: Piece.Kind? = nil
         if piece.kind.isPawn {
             if move.end == enPassantTarget {
                 captureSquare = Square(file: move.end.file, rank: move.start.rank)
-            } else if move.end.rank == Rank(endFor: playerTurn.inverse()) {
-                promotion = board[move.end]
+            } else if move.end.rank == Rank(endFor: playerTurn.inverse()), let promotion = board[move.end] {
+                promotionKind = promotion.kind
+                board[promotion][move.end] = false
             }
         } else if piece.kind.isKing && abs(move.fileChange) == 2 {
             let (old, new) = move._castleSquares()
@@ -742,13 +754,10 @@ public final class Game {
             board[rook][old] = true
             board[rook][new] = false
         }
-        _undoHistory.append((move, promotion, attackers))
         if let capture = capture {
             board[capture][captureSquare] = true
         }
-        if let promotion = promotion {
-            board[promotion][move.end] = false
-        }
+        _undoHistory.append((move, promotionKind, attackers))
         board[piece][move.end] = false
         board[piece][move.start] = true
         playerTurn.invert()
@@ -801,46 +810,12 @@ public final class Game {
 
 }
 
-#if swift(>=3)
-
-/// An error in move execution.
-///
-/// Thrown by the `execute(move:promotion:)` method for a `Board` instance.
-public enum MoveExecutionError: ErrorProtocol {
-
-    /// Attempted illegal move.
-    case illegalMove(Move, Color, Board)
-
-    /// Could not promote with a piece.
-    case invalidPromotionPiece(Piece)
-
-}
-
-#else
-
-/// An error in move execution.
-///
-/// Thrown by the `execute(move:promotion:)` method for a `Board` instance.
-public enum MoveExecutionError: ErrorType {
-
-    /// Attempted illegal move.
-    case IllegalMove(Move, Color, Board)
-
-    /// Could not promote with a piece.
-    case InvalidPromotionPiece(Piece)
-
-}
-
-#endif
-
 /// Returns `true` if the outcomes are the same.
-@warn_unused_result
 public func == (lhs: Game.Outcome, rhs: Game.Outcome) -> Bool {
     return lhs.winColor == rhs.winColor
 }
 
 /// Returns `true` if the positions are the same.
-@warn_unused_result
 public func == (lhs: Game.Position, rhs: Game.Position) -> Bool {
     return lhs.playerTurn == rhs.playerTurn
         && lhs.castlingRights == rhs.castlingRights
